@@ -1,4 +1,4 @@
-/* eslint-disable */
+/* eslint-disable no-nested-ternary */
 import {
   BiAbacus,
   BiBarChartAlt2,
@@ -10,10 +10,9 @@ import {
   BiPaintRoll,
   BiX,
 } from 'react-icons/bi';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import * as ROUTES from '../../constants/Routes';
-import useDarkMode from '../../hooks/useDarkMode';
-import Logo from './Logo';
 import NavItem from './NavItem';
 
 export default function Sidebar({
@@ -34,7 +33,7 @@ export default function Sidebar({
             {expanded ? 'Twelfth Door' : 'td'}
           </h1>
         </Link>
-        <div className={`w-8`}>
+        <div className="w-8">
           {open && (
             <BiX
               onClick={toggleOpen}
@@ -56,31 +55,31 @@ export default function Sidebar({
           expanded={expanded}
           title="Jobs"
           icon={BiPaintRoll}
-          path={ROUTES.HOME}
+          path={ROUTES.JOBS}
         />
         <NavItem
           expanded={expanded}
           title="Messages"
           icon={BiMessageDetail}
-          path={ROUTES.HOME}
+          path={ROUTES.MESSAGES}
         />
         <NavItem
           expanded={expanded}
           title="Drive"
           icon={BiData}
-          path={ROUTES.HOME}
+          path={ROUTES.DRIVE}
         />
         <NavItem
           expanded={expanded}
           title="Targets"
           icon={BiAbacus}
-          path={ROUTES.HOME}
+          path={ROUTES.TARGETS}
         />
         <NavItem
           expanded={expanded}
           title="Reports"
           icon={BiBarChartAlt2}
-          path={ROUTES.HOME}
+          path={ROUTES.REPORTS}
         />
       </nav>
       {!open && expanded ? (
@@ -97,3 +96,10 @@ export default function Sidebar({
     </div>
   );
 }
+
+Sidebar.propTypes = {
+  open: PropTypes.bool.isRequired,
+  toggleOpen: PropTypes.func.isRequired,
+  expanded: PropTypes.bool.isRequired,
+  toggleExpanded: PropTypes.func.isRequired,
+};
