@@ -20,6 +20,8 @@ const firebaseConfig = {
 const firebase = initializeApp(firebaseConfig);
 const db = getFirestore();
 
+// seedDatabase(db);
+
 export {
   firebase,
   db,
