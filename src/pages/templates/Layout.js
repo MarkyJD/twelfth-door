@@ -35,7 +35,7 @@ export default function Layout() {
         />
       </aside>
       <div className="flex-1">
-        <header className="bg-slate-800 shadow-lg h-16 ">
+        <header className="bg-slate-800 shadow-lg h-16">
           <Header toggleOpen={toggleOpen} />
         </header>
         <main className="p-3">

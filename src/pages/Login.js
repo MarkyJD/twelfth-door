@@ -1,6 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import FirebaseContext from '../context/FirebaseContext';
 import * as ROUTES from '../constants/Routes';
+import { getUserEmailByUsername } from '../services/firebase-services';
 
 export default function Login() {
   const [comboInput, setComboInput] = useState('');
@@ -8,22 +10,28 @@ export default function Login() {
   const [error, setError] = useState('');
   const isInvalid = comboInput === '' || password === '';
   const navigate = useNavigate();
+  const { getAuth, signInWithEmailAndPassword } = useContext(FirebaseContext);
 
   const handleLogin = async (event) => {
     event.preventDefault();
     const isEmail = comboInput.includes('@');
-
+    let email = comboInput;
     try {
       if (!isEmail) {
         // Lookup user's email via their username
+        const result = await getUserEmailByUsername(comboInput);
+        if (result === null) {
+          throw new Error('Invalid username');
+        }
+        email = result.emailAddress;
       }
 
-      // Signin with Username and email
+      const auth = getAuth();
+      await signInWithEmailAndPassword(auth, email, password);
+      navigate(ROUTES.HOME);
     } catch (error) {
       setError(error.message);
     }
-
-    // Login
   };
 
   useEffect(() => {

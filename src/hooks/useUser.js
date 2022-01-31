@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
 import UserContext from '../context/UserContext';
-import { getUserByUserId } from '../services/firebase-services';
+import { getUserByDisplayName } from '../services/firebase-services';
 
 export default function useUser() {
   const [activeUser, setActiveUser] = useState({});
@@ -8,10 +8,10 @@ export default function useUser() {
 
   useEffect(() => {
     async function getUserObjByUserId() {
-      const response = await getUserByUserId(user.uid);
+      const response = await getUserByDisplayName(user.displayName);
       setActiveUser(response);
     }
-    if (user?.uid) {
+    if (user?.displayName) {
       getUserObjByUserId();
     }
   }, [user]);

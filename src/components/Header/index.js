@@ -11,11 +11,11 @@ import {
   BiCog,
   BiExit,
 } from 'react-icons/bi';
-import Datetime from './Datetime';
 import useDarkMode from '../../hooks/useDarkMode';
 import FirebaseContext from '../../context/FirebaseContext';
 import UserContext from '../../context/UserContext';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import * as ROUTES from '../../constants/Routes';
 
 export default function Header({ toggleOpen }) {
   const { getAuth, signOut } = useContext(FirebaseContext);
@@ -23,8 +23,15 @@ export default function Header({ toggleOpen }) {
   const auth = getAuth();
   const [isDarkMode, toggleDarkMode] = useDarkMode();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const navigate = useNavigate();
+
   const toggleDropdown = () => {
     setDropdownOpen((prev) => !prev);
+  };
+
+  const handleSignout = () => {
+    signOut(auth);
+    navigate(ROUTES.LOGIN);
   };
 
   return (
@@ -54,11 +61,15 @@ export default function Header({ toggleOpen }) {
         </div>
         <div className="border h-8 my-auto border-slate-600" />
 
-        <div className="text-center mx-1 ml-3 flex items-center">
-          <h2 className="text-slate-200 p-1 font-bold text-md text-shadow hover:text-lightBlue-100 cursor-pointer font-mono">
-            {user && user.displayName}
-          </h2>
-        </div>
+        {user && (
+          <div className="text-center mx-1 ml-3 flex items-center">
+            <Link to={'/'}>
+              <h2 className="text-slate-200 p-1 font-bold text-md text-shadow hover:text-lightBlue-100 cursor-pointer font-mono">
+                {user.displayName}
+              </h2>
+            </Link>
+          </div>
+        )}
 
         <div
           className={`w-10 p-1 mx-1 hover:bg-slate-600 rounded ${
@@ -92,10 +103,13 @@ export default function Header({ toggleOpen }) {
         </div>
         <div className="border-b border-slate-600 w-11/12" />
         <div className="w-10/12 h-10 my-1 mb-2 px-2 flex items-center rounded hover:bg-slate-600 text-white font-semibold">
-          <Link to="/home" className="p-1 flex items-center space-x-1">
+          <div
+            className="p-1 flex cursor-pointer items-center space-x-1"
+            onClick={handleSignout}
+          >
             <BiExit className="icon h-6" />
             <h2>Log Out</h2>
-          </Link>
+          </div>
         </div>
       </div>
     </div>
