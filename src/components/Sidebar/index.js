@@ -83,15 +83,13 @@ export default function Sidebar({
         />
       </nav>
       {!open && expanded ? (
-        <BiChevronLeft
-          onClick={toggleExpanded}
-          className="hidden md:block icon absolute bottom-6 left-6"
-        />
+        <div className="hover:bg-slate-600 rounded p-1 hidden md:block absolute bottom-6 left-6">
+          <BiChevronLeft onClick={toggleExpanded} className="icon" />
+        </div>
       ) : !open && !expanded ? (
-        <BiChevronRight
-          onClick={toggleExpanded}
-          className="hidden md:block icon absolute bottom-6 left-6"
-        />
+        <div className="hover:bg-slate-600 rounded p-1 hidden md:block absolute bottom-6 left-6">
+          <BiChevronRight onClick={toggleExpanded} className="icon" />
+        </div>
       ) : null}
     </div>
   );

@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import {
   collection,
   query,
@@ -12,6 +13,10 @@ import {
 } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 
-export default function getUserByUserId(uid) {
-  return null;
-}
+// export async function getUserByUserId(uid) {
+//   return null;
+// }
+
+// function generateCommentsArray() {
+//   return null;
+// }
