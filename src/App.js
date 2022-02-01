@@ -26,7 +26,7 @@ function App() {
   return (
     <ThemeContext.Provider value={{ isDarkMode }}>
       <UserContext.Provider value={{ user }}>
-        <div className="antialiased bg-lightGray-600 dark:bg-darkGray-600 text-slate-900 dark:text-slate-100">
+        <div className="antialiased bg-lightGray-600 dark:bg-darkGray-700 text-slate-900 dark:text-slate-100">
           <Router>
             <Suspense fallback={<p>Loading...</p>}>
               <Routes>

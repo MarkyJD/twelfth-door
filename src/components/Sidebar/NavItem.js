@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function NavItem({
   icon,
@@ -40,6 +40,6 @@ NavItem.propTypes = {
   expanded: PropTypes.bool.isRequired,
   title: PropTypes.string.isRequired,
   path: PropTypes.string.isRequired,
-  active: PropTypes.bool,
-  setCurrentPath: PropTypes.func,
+  active: PropTypes.bool.isRequired,
+  setCurrentPath: PropTypes.func.isRequired,
 };

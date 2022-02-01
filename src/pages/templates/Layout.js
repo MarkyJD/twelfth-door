@@ -38,7 +38,7 @@ export default function Layout() {
         <header className="bg-slate-800 shadow-lg h-16">
           <Header toggleOpen={toggleOpen} />
         </header>
-        <main className="p-3">
+        <main className="p-3 md:p-4">
           <Outlet />
         </main>
       </div>
