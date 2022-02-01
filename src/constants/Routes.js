@@ -6,3 +6,6 @@ export const MESSAGES = '/messages';
 export const DRIVE = '/drive';
 export const TARGETS = '/targets';
 export const REPORTS = '/reports';
+export const SETTINGS = '/settings';
+export const PROFILE = '/profile';
+export const ADMIN = '/admin';

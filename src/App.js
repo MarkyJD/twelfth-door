@@ -1,3 +1,4 @@
+/* eslint-disable */
 /* eslint-disable react/jsx-no-constructed-context-values */
 import { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -7,9 +8,10 @@ import ThemeContext from './context/ThemeContext';
 import useDarkMode from './hooks/useDarkMode';
 import useAuthListener from './hooks/useAuthListener';
 import UserContext from './context/UserContext';
+import IsLoggedInRoute from './helpers/IsLoggedInRoute';
+import ProtectedRoute from './helpers/ProtectedRoute';
 
 const Login = lazy(() => import('./pages/Login'));
-const Signup = lazy(() => import('./pages/Signup'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 const Home = lazy(() => import('./pages/Home'));
 const Jobs = lazy(() => import('./pages/Jobs'));
@@ -24,19 +26,90 @@ function App() {
   return (
     <ThemeContext.Provider value={{ isDarkMode }}>
       <UserContext.Provider value={{ user }}>
-        <div className="antialiased transition-none bg-lightGray-600 dark:bg-darkGray-600 text-slate-900 dark:text-slate-100">
+        <div className="antialiased bg-lightGray-600 dark:bg-darkGray-600 text-slate-900 dark:text-slate-100">
           <Router>
             <Suspense fallback={<p>Loading...</p>}>
               <Routes>
-                <Route path={ROUTES.SIGN_UP} element={<Signup />} />
-                <Route path={ROUTES.LOGIN} element={<Login />} />
+                <Route
+                  exact
+                  path={ROUTES.LOGIN}
+                  element={(
+                    <IsLoggedInRoute isLoggedInPath={ROUTES.HOME} user={user}>
+                      <Login />
+                    </IsLoggedInRoute>
+                  )}
+                />
+
                 <Route element={<Layout />}>
-                  <Route path={ROUTES.HOME} element={<Home />} />
-                  <Route path={ROUTES.JOBS} element={<Jobs />} />
-                  <Route path={ROUTES.MESSAGES} element={<Messages />} />
-                  <Route path={ROUTES.DRIVE} element={<Drive />} />
-                  <Route path={ROUTES.TARGETS} element={<Targets />} />
-                  <Route path={ROUTES.REPORTS} element={<Reports />} />
+                  
+                  <Route
+                    exact
+                    path={ROUTES.HOME} 
+                    element={(
+                      <ProtectedRoute user={user}>
+                        <Home />
+                      </ProtectedRoute>
+                    )} 
+                  />
+                  
+                  <Route
+                    exact
+                    path={ROUTES.JOBS} 
+                    element={(
+                      <ProtectedRoute user={user}>
+                        <Jobs />
+                      </ProtectedRoute>
+                    )} 
+                  />
+                  
+                  <Route
+                    exact
+                    path={ROUTES.MESSAGES} 
+                    element={(
+                      <ProtectedRoute user={user}>
+                        <Messages />
+                      </ProtectedRoute>
+                    )} 
+                  />
+                  
+                  <Route
+                    exact
+                    path={ROUTES.DRIVE} 
+                    element={(
+                      <ProtectedRoute user={user}>
+                        <Drive />
+                      </ProtectedRoute>
+                    )} 
+                  />
+                  
+                  <Route
+                    exact
+                    path={ROUTES.TARGETS} 
+                    element={(
+                      <ProtectedRoute user={user}>
+                        <Targets />
+                      </ProtectedRoute>
+                    )} 
+                  />
+                  
+                  <Route
+                    path={ROUTES.REPORTS} 
+                    element={(
+                      <ProtectedRoute user={user}>
+                        <Reports />
+                      </ProtectedRoute>
+                    )} 
+                  />
+                  
+                  <Route
+                    path={ROUTES.ADMIN} 
+                    element={(
+                      <ProtectedRoute user={user}>
+                        <Reports />
+                      </ProtectedRoute>
+                    )} 
+                  />
+                 
                 </Route>
                 <Route path="*" element={<NotFound />} />
               </Routes>

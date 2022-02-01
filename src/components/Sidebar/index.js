@@ -1,19 +1,22 @@
 /* eslint-disable no-nested-ternary */
+import { useState } from 'react';
 import {
-  BiAbacus,
   BiBarChartAlt2,
   BiChevronLeft,
   BiChevronRight,
-  BiData,
+  BiDesktop,
+  BiDollarCircle,
+  BiHdd,
   BiHome,
   BiMessageDetail,
-  BiPaintRoll,
+  BiWrench,
   BiX,
 } from 'react-icons/bi';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import * as ROUTES from '../../constants/Routes';
 import NavItem from './NavItem';
+import useUser from '../../hooks/useUser';
 
 export default function Sidebar({
   open,
@@ -21,6 +24,8 @@ export default function Sidebar({
   expanded,
   toggleExpanded,
 }) {
+  const { user } = useUser();
+  const [currentPath, setCurrentPath] = useState(window.location.pathname);
   return (
     <div className="sidebar relative flex flex-col h-full px-3 first:px-0 ">
       <header className={`flex justify-between items-center h-16 px-3 `}>
@@ -50,37 +55,59 @@ export default function Sidebar({
           title="Home"
           icon={BiHome}
           path={ROUTES.HOME}
+          active={ROUTES.HOME === currentPath}
+          setCurrentPath={setCurrentPath}
         />
         <NavItem
           expanded={expanded}
           title="Jobs"
-          icon={BiPaintRoll}
+          icon={BiWrench}
           path={ROUTES.JOBS}
+          active={ROUTES.JOBS === currentPath}
+          setCurrentPath={setCurrentPath}
         />
         <NavItem
           expanded={expanded}
           title="Messages"
           icon={BiMessageDetail}
           path={ROUTES.MESSAGES}
+          active={ROUTES.MESSAGES === currentPath}
+          setCurrentPath={setCurrentPath}
         />
         <NavItem
           expanded={expanded}
           title="Drive"
-          icon={BiData}
+          icon={BiHdd}
           path={ROUTES.DRIVE}
+          active={ROUTES.DRIVE === currentPath}
+          setCurrentPath={setCurrentPath}
         />
         <NavItem
           expanded={expanded}
           title="Targets"
-          icon={BiAbacus}
+          icon={BiDollarCircle}
           path={ROUTES.TARGETS}
+          active={ROUTES.TARGETS === currentPath}
+          setCurrentPath={setCurrentPath}
         />
         <NavItem
           expanded={expanded}
           title="Reports"
           icon={BiBarChartAlt2}
           path={ROUTES.REPORTS}
+          active={ROUTES.REPORTS === currentPath}
+          setCurrentPath={setCurrentPath}
         />
+        {user.privilege === 'admin' ? (
+          <NavItem
+            expanded={expanded}
+            title="Admin"
+            icon={BiDesktop}
+            path={ROUTES.ADMIN}
+            active={ROUTES.ADMIN === currentPath}
+            setCurrentPath={setCurrentPath}
+          />
+        ) : null}
       </nav>
       {!open && expanded ? (
         <div className="hover:bg-slate-600 rounded p-1 hidden md:block absolute bottom-6 left-6">

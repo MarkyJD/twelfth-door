@@ -1,6 +1,5 @@
 import propTypes from 'prop-types';
 import { useEffect } from 'react';
-import Layout from './templates/Layout';
 
 export default function Home() {
   useEffect(() => {
@@ -8,7 +7,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="bg-blue-400">
+    <div className="">
       <div>Hello</div>
       <div>Hello</div>
       <div>Hello</div>
