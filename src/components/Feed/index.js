@@ -1,18 +1,27 @@
-import { useContext } from 'react';
+import Skeleton from 'react-loading-skeleton';
 import useUser from '../../hooks/useUser';
+import useFeed from '../../hooks/useFeed';
 import Header from '../Card/Header';
 import Footer from '../Card/Footer';
+import Post from './Post';
 
 export default function Feed() {
   const { user } = useUser();
+  const { feed } = useFeed();
+
   const handlePost = (event) => {
     event.preventDefault();
   };
+
   return (
     <div className="w-full p-3">
       <Header title="Announcements" />
       <main>
-        <div>Hi</div>
+        {feed ? (
+          feed.map((post) => <Post key={post.docId} message={post} />)
+        ) : (
+          <Skeleton count={1} height={40} width={100} />
+        )}
       </main>
       <section>
         <form

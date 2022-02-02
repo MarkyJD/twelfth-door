@@ -7,6 +7,7 @@ import {
   getDoc,
   limit,
   arrayRemove,
+  onSnapshot,
   doc,
   arrayUnion,
   updateDoc,
@@ -30,9 +31,6 @@ export async function getUserByDisplayName(displayName) {
   return user;
 }
 
-// function generateCommentsArray() {
-//   return null;
-// }
 export async function getUserEmailByUsername(username) {
   const usersRef = collection(db, 'users');
   const q = query(usersRef, where('username', '==', username.toLowerCase()));
@@ -52,4 +50,40 @@ export async function getUserEmailByUsername(username) {
   });
 
   return result;
+}
+
+export async function getAllAnnouncements() {
+  const messagesRef = collection(db, 'messages');
+  const q = query(
+    messagesRef,
+    where('recipients', 'array-contains', '@everyone')
+  );
+  const querySnapshot = await getDocs(messagesRef);
+  let source = 'Nothing fetched';
+  onSnapshot(q, { includeMetadataChanges: true }, (snapshot) => {
+    snapshot.docChanges().forEach((change) => {
+      if (change.type === 'added') {
+        // console.log('new change: ', change.doc.data());
+      }
+
+      source = snapshot.metadata.fromCache ? 'local cache' : 'server';
+    });
+  });
+
+  console.log('Data came from: ', source);
+
+  if (querySnapshot.empty) {
+    return null;
+  }
+
+  const results = [];
+
+  querySnapshot.forEach((doc) => {
+    results.push({
+      ...doc.data(),
+      docId: doc.id,
+    });
+  });
+
+  return results;
 }

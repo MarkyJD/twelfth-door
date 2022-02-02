@@ -1,5 +1,9 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore';
+import {
+  getFirestore,
+  enableIndexedDbPersistence,
+  disableNetwork,
+} from 'firebase/firestore';
 import {
   getAuth,
   signOut,
@@ -21,6 +25,14 @@ const firebaseConfig = {
 
 const firebase = initializeApp(firebaseConfig);
 const db = getFirestore();
+enableIndexedDbPersistence(db).catch((error) => {
+  if (error.code === 'failed-precondition') {
+    console.log(error.message);
+  } else if (error.code === 'unimplemented') {
+    console.log(error.message);
+  }
+});
+
 export {
   firebase,
   db,
