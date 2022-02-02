@@ -1,5 +1,4 @@
 /* eslint-disable */
-
 import PropTypes from 'prop-types';
 
 export default function Post({ message: { author, comments, content, dateCreated, recipients, userId } }) {

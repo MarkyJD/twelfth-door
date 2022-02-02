@@ -1,9 +1,12 @@
-import propTypes from 'prop-types';
 import { useEffect } from 'react';
 import Feed from '../components/Feed';
 import LatestJobs from '../components/LatestJobs';
 import LatestProjections from '../components/LatestProjections';
 import Datetime from '../components/Header/Datetime';
+
+const app = 'hello';
+
+console.log(app);
 
 export default function Home() {
   useEffect(() => {
