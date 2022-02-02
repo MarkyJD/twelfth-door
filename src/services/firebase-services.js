@@ -67,10 +67,9 @@ export async function getAllAnnouncements() {
       }
 
       source = snapshot.metadata.fromCache ? 'local cache' : 'server';
+      console.log('Data came from: ', source);
     });
   });
-
-  console.log('Data came from: ', source);
 
   if (querySnapshot.empty) {
     return null;

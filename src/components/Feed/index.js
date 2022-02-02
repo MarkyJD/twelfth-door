@@ -1,14 +1,14 @@
+import { useContext } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import useUser from '../../hooks/useUser';
-import useFeed from '../../hooks/useFeed';
+import UserContext from '../../context/UserContext';
 import Header from '../Card/Header';
 import Footer from '../Card/Footer';
 import Post from './Post';
 
 export default function Feed() {
   const { user } = useUser();
-  const { feed } = useFeed();
-
+  const { feed } = useContext(UserContext);
   const handlePost = (event) => {
     event.preventDefault();
   };

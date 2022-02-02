@@ -1,10 +1,10 @@
 import { useState, useEffect, useContext } from 'react';
-import { getAllAnnouncements } from '../services/firebase-services';
 import UserContext from '../context/UserContext';
+import { getAllAnnouncements } from '../services/firebase-services';
 
 export default function useFeed() {
   const [feed, setFeed] = useState(null);
-  const { user } = useContext(UserContext);
+  // const { user } = useContext(UserContext);
 
   useEffect(() => {
     async function getFeed() {
@@ -13,9 +13,9 @@ export default function useFeed() {
       results.sort((a, b) => b.dateCreated - a.dateCreated);
       setFeed(results);
     }
-    if (user?.uid) {
+    if (feed === null) {
       getFeed();
     }
-  }, [user]);
+  }, []);
   return { feed };
 }
