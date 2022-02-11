@@ -16,13 +16,6 @@ export default function Feed() {
   return (
     <div className="w-full p-3">
       <Header title="Announcements" />
-      <main>
-        {feed ? (
-          feed.map((post) => <Post key={post.docId} message={post} />)
-        ) : (
-          <Skeleton count={1} height={40} width={100} />
-        )}
-      </main>
       <section>
         <form
           method="POST"
@@ -40,6 +33,15 @@ export default function Feed() {
           />
         </form>
       </section>
+      <main>
+        {feed ? (
+          feed
+            .slice(0, 10)
+            .map((post) => <Post key={post.docId} message={post} />)
+        ) : (
+          <Skeleton count={20} height={40} width={100} />
+        )}
+      </main>
       <Footer />
     </div>
   );

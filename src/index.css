@@ -8,6 +8,9 @@
   .icon {
     @apply text-3xl cursor-pointer text-slate-200;
   }
+  .inlineIcon {
+    @apply text-xl text-darkGray-600 dark:text-lightGray-600;
+  }
 }
 
 @layer utilities {

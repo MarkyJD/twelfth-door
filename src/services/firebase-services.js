@@ -7,6 +7,7 @@ import {
   getDoc,
   limit,
   arrayRemove,
+  orderBy,
   onSnapshot,
   doc,
   arrayUnion,
@@ -52,13 +53,15 @@ export async function getUserEmailByUsername(username) {
   return result;
 }
 
-export async function getAllAnnouncements() {
+export async function getAnnouncements(number = 15) {
   const messagesRef = collection(db, 'messages');
   const q = query(
     messagesRef,
-    where('recipients', 'array-contains', '@everyone')
+    where('recipients', 'array-contains', '@everyone'),
+    orderBy('dateCreated', 'desc'),
+    limit(number)
   );
-  const querySnapshot = await getDocs(messagesRef);
+  const querySnapshot = await getDocs(q);
   let source = 'Nothing fetched';
   onSnapshot(q, { includeMetadataChanges: true }, (snapshot) => {
     snapshot.docChanges().forEach((change) => {
@@ -85,4 +88,18 @@ export async function getAllAnnouncements() {
   });
 
   return results;
+}
+
+export async function addCommentByDocId(docId, username, comment) {
+  const docRef = doc(db, 'messages', docId);
+
+  const newComment = {
+    comment,
+    username,
+    dateCreated: Date.now(),
+  };
+
+  await updateDoc(docRef, {
+    comments: arrayUnion(newComment),
+  });
 }

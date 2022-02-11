@@ -11,6 +11,7 @@ import UserContext from './context/UserContext';
 import IsLoggedInRoute from './helpers/IsLoggedInRoute';
 import ProtectedRoute from './helpers/ProtectedRoute';
 import useFeed from './hooks/useFeed';
+import { generateSchema, seedDatabase } from './mock_data/seed';
 
 const Login = lazy(() => import('./pages/Login'));
 const NotFound = lazy(() => import('./pages/NotFound'));

@@ -1,6 +1,5 @@
-import { useState, useEffect, useContext } from 'react';
-import UserContext from '../context/UserContext';
-import { getAllAnnouncements } from '../services/firebase-services';
+import { useState, useEffect } from 'react';
+import { getAnnouncements } from '../services/firebase-services';
 
 export default function useFeed() {
   const [feed, setFeed] = useState(null);
@@ -8,8 +7,8 @@ export default function useFeed() {
 
   useEffect(() => {
     async function getFeed() {
-      const results = await getAllAnnouncements();
-      console.log('this fired');
+      const results = await getAnnouncements();
+      // console.log(results);
       results.sort((a, b) => b.dateCreated - a.dateCreated);
       setFeed(results);
     }
