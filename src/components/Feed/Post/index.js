@@ -21,6 +21,11 @@ export default function Post({
   const commentInput = useRef(null);
   const [inputOpen, setInputOpen] = useState(false);
   const [commentsExpanded, setCommentsExpanded] = useState(false);
+  const [numComments, setNumComments] = useState(comments.length);
+
+  const updateNumComments = () => {
+    setNumComments((prev) => prev + 1);
+  };
 
   const handleFocus = () => {
     setInputOpen((prev) => !prev);
@@ -39,7 +44,7 @@ export default function Post({
         <p className="text-md text-slate-700 dark:text-slate-100">{content}</p>
         <Actions
           setCommentsExpanded={setCommentsExpanded}
-          numComments={comments.length}
+          numComments={numComments}
           handleFocus={handleFocus}
         />
         <Comments
@@ -50,6 +55,7 @@ export default function Post({
           docId={docId}
           username={user.username}
           inputOpen={inputOpen}
+          updateNumComments={updateNumComments}
         />
         <div className="w-full mx-auto mt-3 border-b border-slate-200 dark:border-slate-700" />
       </div>

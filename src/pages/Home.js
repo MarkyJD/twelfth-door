@@ -17,7 +17,7 @@ export default function Home() {
         <h2 className="font-thin text-lg dark:text-lightBlue-100 text-darkBlue-100">
           {format(today, 'cccc, ')}
           <span className="text-sm font-bold text-slate-500">
-            {format(today, 'Mo MMMM, yyyy')}
+            {format(today, 'do MMMM')}
           </span>
         </h2>
       </div>

@@ -11,15 +11,18 @@ export default function Comments({
   docId,
   username,
   inputOpen,
+  updateNumComments,
 }) {
-  const [localComments, setLocalComments] = useState([...comments]);
+  const sortedComments = comments.sort((a, b) => b.dateCreated - a.dateCreated);
+  const [localComments, setLocalComments] = useState([...sortedComments]);
   const addComment = async (comment) => {
     const newComment = {
       comment,
       username,
       dateCreated: Date.now(),
     };
-    setLocalComments((prev) => [...prev, newComment]);
+    setLocalComments((prev) => [newComment, ...prev]);
+    updateNumComments();
     await addCommentByDocId(docId, username, comment);
   };
 
@@ -66,4 +69,5 @@ Comments.propTypes = {
   docId: PropTypes.string.isRequired,
   username: PropTypes.string.isRequired,
   inputOpen: PropTypes.bool.isRequired,
+  updateNumComments: PropTypes.func.isRequired,
 };
