@@ -12,6 +12,10 @@ const customStyles = {
     lineHeight: '1.75rem',
     fontWeight: '400',
   }),
+  option: (provided, { data }) => ({
+    ...provided,
+    color: data.value.includes('@') ? '#1d4ed8' : '#505663',
+  }),
 };
 
 export default function RecipientsWidget({ name, label, onChange, options }) {
@@ -19,13 +23,58 @@ export default function RecipientsWidget({ name, label, onChange, options }) {
   const users = [
     {
       value: '@everyone',
-      label: 'everyone',
+      label: '@everyone',
+    },
+    {
+      value: '@grounds',
+      label: '@grounds',
+    },
+    {
+      value: '@housekeeping',
+      label: '@housekeeping',
+    },
+    {
+      value: '@reception',
+      label: '@reception',
+    },
+    {
+      value: '@maintenance',
+      label: '@maintenance',
+    },
+    {
+      value: '@management',
+      label: '@management',
     },
   ];
 
-  useEffect(() => {
-    onChange(users);
-  }, []);
+  const handleSelect = (selected) => {
+    const lastIndex = selected.length - 1;
+
+    if (selected[lastIndex] && selected[lastIndex].value.includes('@')) {
+      const searchString = selected[lastIndex].value.substring(1);
+      let results = options;
+      if (searchString !== 'everyone') {
+        results = options.filter((user) => user.department === searchString);
+      }
+
+      const temp = [];
+      results.forEach((user) => {
+        temp.push({
+          value: user.username,
+          label: user.username,
+        });
+      });
+
+      onChange([...selected, ...temp]);
+      return [...selected, ...temp];
+    }
+    onChange(selected);
+    return selected;
+  };
+
+  // useEffect(() => {
+  //   onChange(users);
+  // }, []);
 
   options
     .sort((a, b) => a.username.localeCompare(b.username))
@@ -41,13 +90,12 @@ export default function RecipientsWidget({ name, label, onChange, options }) {
       <Select
         className="text-slate-900 font-normal ml-[-10px] "
         options={users}
-        defaultValue={[users[0]]}
         isMulti
         closeMenuOnSelect={false}
         styles={customStyles}
         onMenuOpen={() => setFocus(true)}
         onBlur={() => setFocus(false)}
-        onChange={(value) => onChange(value)}
+        onChange={(value) => handleSelect(value)}
         placeholder={name}
       />
     </Field>
