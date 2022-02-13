@@ -45,18 +45,20 @@ export default function Feed() {
               isEditorOpenOnMobile
                 ? ' fixed inset-y-0 inset-x-0 block '
                 : ' hidden md:block fixed inset-x-0 inset-y-0 '
-            } bg-black/50 border-slate-200 dark:border-slate-700 p-2`}
+            } bg-black/60 transition-all ease-in-out duration-300 p-2`}
           >
             <div
               onClick={(e) => e.stopPropagation()}
-              className={`relative mx-auto shadow-2xl ${
-                isEditorOpenOnMobile ? ' w-5/6 h-5/6' : ' w-4/6 h-5/6'
-              }  top-[50%] -translate-y-[50%] border rounded bg-slate-100 dark:bg-darkGray-600`}
+              className={`relative mx-auto shadow-2xl px-3 py-2 ${
+                isEditorOpenOnMobile ? ' w-11/12 h-5/6' : ' w-4/6 h-5/6'
+              }  top-[50%] -translate-y-[50%] rounded border border-lightGray-500 dark:border-darkGray-400 bg-lightGray-700 dark:bg-darkGray-700`}
             >
-              <div className="w-full flex justify-between mb-2">
-                <h2 className="text-lg font-bold">Whats on your mind?</h2>
+              <div className="h-14 px-5 mx-auto flex items-center justify-between mb-2">
+                <h2 className="text-xl font-thin font-title text-slate-800 dark:text-slate-200 text-shadow-none">
+                  Whats on your mind?
+                </h2>
                 <BiX
-                  className="icon text-black dark:text-white "
+                  className="icon text-black dark:text-white hover:bg-slate-400 rounded"
                   onClick={() => toggleEditor(isEditorOpenOnMobile)}
                 />
               </div>
@@ -79,9 +81,7 @@ export default function Feed() {
       </section>
       <main>
         {feed ? (
-          feed
-            .slice(0, 10)
-            .map((post) => <Post key={post.docId} message={post} />)
+          feed.map((post) => <Post key={post.docId} message={post} />)
         ) : (
           <Skeleton count={20} height={40} width={100} />
         )}

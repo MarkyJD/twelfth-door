@@ -1,96 +1,65 @@
-/* eslint-disable */
-import { useCallback, useMemo, useState } from 'react';
-import { createEditor, Editor, Transforms, Text } from 'slate';
-import { Slate, Editable, withReact } from 'slate-react';
+import { useState, useEffect } from 'react';
+import DebugWidget from './DebugWidget';
+import MarkdownWidget from './MarkdownWidget';
+import TextWidget from './TextWidget';
+import RecipientsWidget from './RecipientsWidget';
+import { getAllUsers } from '../../services/firebase-services';
 
 export default function TextEditor() {
-  const editor = useMemo(() => withReact(createEditor()), []);
-  const [value, setValue] = useState([
-    {
-      type: 'paragraph',
-      children: [{ text: 'A line of text in a paragraph' }],
-    },
-  ]);
+  const [value, setValue] = useState({
+    entry: {},
+    debug: true,
+  });
 
-  const renderElement = useCallback((props) => {
-    switch (props.element.type) {
-      case 'code':
-        return <CodeElement {...props} />;
-      default:
-        return <DefaultElement {...props} />;
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    async function getUsers() {
+      const results = await getAllUsers();
+      setUsers([...results]);
     }
-  });
 
-  const renderLeaf = useCallback((props) => {
-    return <Leaf {...props} />;
-  });
+    getUsers();
+  }, []);
+
+  const updateValue = (newValue) => {
+    setValue((prev) => ({
+      ...prev,
+      entry: {
+        ...prev.entry,
+        ...newValue,
+      },
+    }));
+  };
+
+  const { debug, entry } = value;
 
   return (
-    <>
-      <Slate
-        editor={editor}
-        value={value}
-        onChange={(newValue) => setValue(newValue)}
-      >
-        <Editable
-          renderElement={renderElement}
-          renderLeaf={renderLeaf}
-          onKeyDown={(event) => {
-            if (!event.ctrlKey) {
-              return;
-            }
-
-            switch (event.key) {
-              case '`': {
-                event.preventDefault();
-                const [match] = Editor.nodes(editor, {
-                  match: (n) => n.type === 'code',
-                });
-                Transforms.setNodes(
-                  editor,
-                  { type: match ? null : 'code' },
-                  { match: (n) => Editor.isBlock(editor, n) }
-                );
-                break;
-              }
-
-              case 'b': {
-                event.preventDefault();
-                Transforms.setNodes(
-                  editor,
-                  { bold: true },
-                  { match: (n) => Text.isText(n), split: true }
-                );
-                break;
-              }
-            }
-          }}
+    users && (
+      <>
+        <TextWidget
+          title
+          name="Enter a title or subject"
+          label="title"
+          value={entry.title}
+          onChange={(title) => updateValue({ title })}
         />
-      </Slate>
-    </>
+        <TextWidget
+          name="(optional) Enter a subtitle"
+          label="subtitle"
+          value={entry.subtitle}
+          onChange={(subtitle) => updateValue({ subtitle })}
+        />
+        <RecipientsWidget
+          name="Search people"
+          label="Recipients"
+          value={entry.recipients}
+          onChange={(recipients) => updateValue({ recipients })}
+          options={users}
+        />
+        <MarkdownWidget />
+        {debug && <DebugWidget data={entry} />}
+      </>
+    )
   );
 }
-
-const CodeElement = (props) => {
-  return (
-    <pre {...props.attributes}>
-      <code>{props.children}</code>
-    </pre>
-  );
-};
-
-const DefaultElement = (props) => {
-  return <p {...props.attributes}>{props.children}</p>;
-};
-
-const Leaf = (props) => {
-  console.log('this fired');
-  return (
-    <span
-      {...props.attributes}
-      className={`${props.leaf.bold ? ' font-bold' : ' font-normal'}`}
-    >
-      {props.children}
-    </span>
-  );
-};

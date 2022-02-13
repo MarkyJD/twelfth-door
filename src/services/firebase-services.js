@@ -15,6 +15,21 @@ import {
 } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 
+export async function getAllUsers() {
+  const usersRef = collection(db, 'users');
+  const querySnapshot = await getDocs(usersRef);
+
+  const results = [];
+  querySnapshot.forEach((doc) => {
+    results.push({
+      ...doc.data(),
+      docId: doc.id,
+    });
+  });
+
+  return results;
+}
+
 export async function getUserByDisplayName(displayName) {
   const usersRef = collection(db, 'users');
   const q = query(usersRef, where('username', '==', displayName));
