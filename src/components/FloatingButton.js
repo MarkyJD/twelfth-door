@@ -16,7 +16,7 @@ export default function FloatingButton({ handleClick }) {
       type="button"
       className={`${
         isActive
-          ? ' bg-red-800 hover:bg-red-900 shadow-gray-400 dark:shadow-gray-800 '
+          ? ' bg-red-800 hover:bg-red-900 shadow-gray-600 dark:shadow-gray-800 '
           : ' hover:bg-blue-800 cursor-pointer bg-blue-700 shadow-slate-400 dark:shadow-slate-800 '
       } fixed shadow-lg  flex items-center justify-center bottom-8 right-8 h-16 w-16 rounded-full md:hidden`}
     >

@@ -1,6 +1,6 @@
 /* eslint-disable */
 /* eslint-disable react/jsx-no-constructed-context-values */
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import * as ROUTES from './constants/Routes';
 import Layout from './pages/templates/Layout';

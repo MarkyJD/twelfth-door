@@ -22,15 +22,17 @@ export default function Home() {
         </h2>
       </div>
       <div className="border-b border-slate-200 dark:border-slate-600 w-full mt-1 mb-3" />
-      <div className="grid grid-cols-12 grid-rows-2 gap-3">
-        <div className="col-span-12 row-span-2 md:col-span-6 lg:col-span-7 w-full shadow-lg rounded bg-lightGray-700 dark:bg-darkGray-600">
+      <div className="flex items-start w-full space-x-3">
+        <div className="w-full md:w-7/12 shadow-lg rounded bg-lightGray-700 dark:bg-darkGray-600">
           <Feed />
         </div>
-        <div className="hidden md:block col-span-12 md:col-span-6 lg:col-span-5 w-full shadow-lg rounded bg-lightGray-700 dark:bg-darkGray-600">
-          <LatestJobs />
-        </div>
-        <div className="hidden md:block col-span-12 md:col-span-6 lg:col-span-5 w-full shadow-lg rounded bg-lightGray-700 dark:bg-darkGray-600">
-          <LatestProjections />
+        <div className="hidden md:flex md:flex-col md:w-5/12 space-y-2">
+          <div className="shadow-lg rounded bg-lightGray-700 dark:bg-darkGray-600">
+            <LatestJobs />
+          </div>
+          <div className="shadow-lg rounded bg-lightGray-700 dark:bg-darkGray-600">
+            <LatestProjections />
+          </div>
         </div>
       </div>
     </div>

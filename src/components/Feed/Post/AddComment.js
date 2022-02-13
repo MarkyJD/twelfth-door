@@ -5,8 +5,10 @@ export default function AddComment({ addComment, commentInput }) {
   const [reply, setReply] = useState('');
   const handleSubmit = (e) => {
     e.preventDefault();
-    addComment(reply);
-    setReply('');
+    if (reply) {
+      addComment(reply);
+      setReply('');
+    }
   };
 
   return (
@@ -24,7 +26,7 @@ export default function AddComment({ addComment, commentInput }) {
         onChange={({ target: { value } }) => setReply(value)}
       />
       <button
-        className="text-sm font-semibold flex items-center text-darkGray-700 dark:text-lightGray-700 bg-lightBlue-100 dark:bg-darkBlue-200  hover:bg-lightBlue-200 dark:hover:bg-darkBlue-300 py-5 px-4 h-2 border border-l-0  border-lightGray-400 dark:border-darkGray-400 outline-lightBlue-200 rounded-r mt-5 mb-3"
+        className="text-sm font-bold flex items-center text-white bg-blue-600 dark:bg-blue-600  hover:bg-blue-700 dark:hover:bg-blue-500 py-5 px-4 h-2 border border-l-0  border-lightGray-400 dark:border-darkGray-400 outline-lightBlue-200 rounded-r mt-5 mb-3"
         type="button"
         onClick={handleSubmit}
       >
