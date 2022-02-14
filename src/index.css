@@ -11,6 +11,10 @@
   .inlineIcon {
     @apply text-xl text-darkGray-600 dark:text-lightGray-600;
   }
+
+  .editorIcon {
+    @apply text-3xl rounded p-2 hover:bg-slate-200 dark:hover:bg-slate-800 cursor-pointer;
+  }
 }
 
 @layer utilities {

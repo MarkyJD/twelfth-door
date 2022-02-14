@@ -70,7 +70,7 @@ export default function TextEditor({ toggleEditor, isEditorOpenOnMobile }) {
           onChange={(recipients) => updateValue({ recipients })}
           options={users}
         />
-        <MarkdownWidget />
+        <MarkdownWidget onChange={(body) => updateValue({ body })} />
         {debug && <DebugWidget data={entry} />}
       </div>
     )

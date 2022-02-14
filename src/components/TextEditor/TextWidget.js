@@ -9,7 +9,7 @@ export default function TextWidget({
   value,
   onChange,
 }) {
-  const [focus, setFocus] = useState();
+  const [focus, setFocus] = useState(false);
 
   return (
     <Field focus={focus} label={label} setFocus={setFocus}>
