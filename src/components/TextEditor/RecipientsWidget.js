@@ -86,11 +86,12 @@ export default function RecipientsWidget({ name, label, onChange, options }) {
     });
 
   return (
-    <Field focus={focus} label={label} setFocus={setFocus}>
+    <Field focus={focus} label={label} required>
       <Select
         className="text-slate-900 font-normal ml-[-10px] "
         options={users}
         isMulti
+        tabSelectsValue={false}
         closeMenuOnSelect={false}
         styles={customStyles}
         onMenuOpen={() => setFocus(true)}

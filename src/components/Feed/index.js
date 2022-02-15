@@ -2,7 +2,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import { useContext, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
-import { BiX } from 'react-icons/bi';
 import useUser from '../../hooks/useUser';
 import UserContext from '../../context/UserContext';
 import Header from '../Card/Header';
@@ -10,6 +9,7 @@ import Footer from '../Card/Footer';
 import Post from './Post';
 import FloatingButton from '../FloatingButton';
 import TextEditor from '../TextEditor';
+import { addMessage } from '../../services/firebase-services';
 
 export default function Feed() {
   const { user } = useUser();
@@ -17,9 +17,10 @@ export default function Feed() {
   // Mobile responsive. By default hidden on mobile sizes
   const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [isEditorOpenOnMobile, setIsEditorOpenOnMobile] = useState(false);
+  const [isValidPost, setIsValidPost] = useState(false);
 
-  const handlePost = (event) => {
-    event.preventDefault();
+  const setFAB = (isValid) => {
+    setIsValidPost(isValid);
   };
 
   const toggleEditor = (mobile = false) => {
@@ -29,13 +30,22 @@ export default function Feed() {
     }
   };
 
+  const handlePost = async ({ entry }) => {
+    // event.preventDefault();
+    toggleEditor();
+
+    await addMessage(user.userId, user.username, entry);
+
+    console.log('posted');
+  };
+
   return (
     <div className="w-full p-3 ">
       <Header title="Announcements" />
       <section className="py-1">
         {isEditorOpen ? (
           <div
-            onClick={toggleEditor}
+            // onClick={toggleEditor}
             className={`${
               isEditorOpenOnMobile
                 ? ' fixed inset-y-0 inset-x-0 block '
@@ -44,13 +54,13 @@ export default function Feed() {
           >
             <div
               onClick={(e) => e.stopPropagation()}
-              className={`relative mx-auto shadow-2xl px-3 py-2 ${
-                isEditorOpenOnMobile ? ' w-11/12 h-5/6' : ' w-4/6 h-5/6'
-              }  top-[50%] -translate-y-[50%] rounded border border-lightGray-500 dark:border-darkGray-400 bg-lightGray-700 dark:bg-darkGray-700`}
+              className="relative z-50 mx-auto shadow-2xl px-3 py-2 w-11/12 h-5/6 md:w-5/6 md:h-5/6 lg:w-9/12 lg:h-5/6 xl:w-4/6 xl:h-5/6 2xl:w-1/2 2xl:h-5/6 top-[50%] -translate-y-[50%] rounded border border-lightGray-500 dark:border-darkGray-400 bg-lightGray-700 dark:bg-darkGray-700"
             >
               <TextEditor
                 toggleEditor={toggleEditor}
+                setFAB={setFAB}
                 isEditorOpenOnMobile={isEditorOpenOnMobile}
+                handlePost={handlePost}
               />
             </div>
           </div>
@@ -68,12 +78,19 @@ export default function Feed() {
       </section>
       <main>
         {feed ? (
-          feed.map((post) => <Post key={post.docId} message={post} />)
+          feed.map((post) => (
+            <Post key={post.docId} message={post} isEditorOpen={isEditorOpen} />
+          ))
         ) : (
           <Skeleton count={20} height={40} width={100} />
         )}
       </main>
-      <FloatingButton toggleEditor={toggleEditor} isEditorOpen={isEditorOpen} />
+      <FloatingButton
+        toggleEditor={toggleEditor}
+        isEditorOpen={isEditorOpen}
+        isValidPost={isValidPost}
+        handlePost={handlePost}
+      />
       <Footer />
     </div>
   );

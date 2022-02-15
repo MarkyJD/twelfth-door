@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { formatDistance } from 'date-fns';
@@ -28,7 +29,7 @@ export default function Comments({
 
   return (
     <div className="ml-3 p-1 pt-3">
-      {commentsExpanded ? (
+      {commentsExpanded && comments.length > 0 ? (
         localComments.map((comment, i) => (
           <div key={i} className="flex flex-col mb-3 ">
             <h3 className="font-bold text-sm">
@@ -42,7 +43,7 @@ export default function Comments({
             <p className="text-sm">{comment.comment}</p>
           </div>
         ))
-      ) : (
+      ) : comments.length > 0 ? (
         <div className="flex flex-col mb-3">
           <h3 className="font-bold text-sm">
             {localComments[0].username}{' '}
@@ -54,7 +55,7 @@ export default function Comments({
           </h3>
           <p className="text-sm">{localComments[0].comment}</p>
         </div>
-      )}
+      ) : null}
       {inputOpen && (
         <AddComment addComment={addComment} commentInput={commentInput} />
       )}

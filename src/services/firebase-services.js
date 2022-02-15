@@ -12,6 +12,7 @@ import {
   doc,
   arrayUnion,
   updateDoc,
+  addDoc,
 } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 
@@ -117,4 +118,23 @@ export async function addCommentByDocId(docId, username, comment) {
   await updateDoc(docRef, {
     comments: arrayUnion(newComment),
   });
+}
+
+export async function addMessage(userId, username, rawMessage) {
+  const message = {
+    author: username,
+    comments: [],
+    richText: true,
+    content: JSON.stringify(rawMessage.body),
+    dateCreated: Date.now(),
+    recipients: rawMessage.recipients.map((recipient) => recipient.value),
+    subject: rawMessage.title,
+    subtitle: rawMessage.subtitle ? rawMessage.subtitle : '',
+    userId,
+  };
+
+  const messagesRef = collection(db, 'messages');
+  const docRef = await addDoc(messagesRef, message);
+
+  return docRef;
 }

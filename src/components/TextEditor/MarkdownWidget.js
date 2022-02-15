@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-nested-ternary */
 import PropTypes from 'prop-types';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState, useEffect } from 'react';
 import isHotkey from 'is-hotkey';
 import {
   FaBold,
@@ -19,7 +19,6 @@ import {
   Editor,
   Transforms,
   createEditor,
-  Descendant,
   Element as SlateElement,
 } from 'slate';
 import { withHistory } from 'slate-history';
@@ -88,15 +87,15 @@ function toggleMark(editor, format) {
   }
 }
 
-function Element({ attributes, children, element }) {
+export function Element({ attributes, children, element }) {
   switch (element.type) {
     case 'block-quote':
       return (
         <blockquote
-          className="p-4 font-bold text-slate-600 dark:text-slate-400"
+          className="p-4 text-slate-600 dark:text-slate-400"
           {...attributes}
         >
-          <span className="text-blue-400 dark:text-blue-800 text-xl">
+          <span className="text-slate-400 dark:text-slate-600 text-3xl">
             {'| '}
           </span>
           {children}
@@ -104,21 +103,28 @@ function Element({ attributes, children, element }) {
       );
     case 'bulleted-list':
       return (
-        <ul className="list-disc pl-4" {...attributes}>
+        <ul className="list-disc ml-8 pl-4" {...attributes}>
           {children}
         </ul>
       );
     case 'heading':
       return (
-        <h1 className="text-lg text-shadow-sm font-semibold" {...attributes}>
+        <h1
+          className="text-2xl text-shadow-sm py-1 text-slate-700 dark:text-slate-300"
+          {...attributes}
+        >
           {children}
         </h1>
       );
     case 'list-item':
-      return <li {...attributes}>{children}</li>;
+      return (
+        <li className="list-item pl-4" {...attributes}>
+          {children}
+        </li>
+      );
     case 'numbered-list':
       return (
-        <ol className="list-decimal pl-4" {...attributes}>
+        <ol className="list-decimal ml-8 pl-4" {...attributes}>
           {children}
         </ol>
       );
@@ -127,14 +133,26 @@ function Element({ attributes, children, element }) {
   }
 }
 
-function Leaf({ attributes, children, leaf }) {
+export function Leaf({ attributes, children, leaf }) {
   let output = children;
   if (leaf.bold) {
     output = <strong>{children}</strong>;
   }
 
+  if (leaf.placeholder) {
+    output = (
+      <span className="text-gray-400 dark:text-gray-600" {...attributes}>
+        {children}
+      </span>
+    );
+  }
+
   if (leaf.code) {
-    output = <code>{children}</code>;
+    output = (
+      <code className="rounded block my-2 p-2 bg-gray-200 dark:bg-gray-800">
+        {children}
+      </code>
+    );
   }
 
   if (leaf.italic) {
@@ -148,149 +166,175 @@ function Leaf({ attributes, children, leaf }) {
   return <span {...attributes}>{output}</span>;
 }
 
-export default function MarkdownWidget({ onChange }) {
+export default function MarkdownWidget({
+  onChange,
+  name,
+  readOnly = false,
+  rawContent,
+  label,
+  required = false,
+}) {
   const [focus, setFocus] = useState(false);
-  const [value, setValue] = useState([
-    {
-      children: [{ text: '' }],
-    },
-  ]);
+  const [content, setContent] = useState(null);
   const renderElement = useCallback((props) => <Element {...props} />, []);
   const renderLeaf = useCallback((props) => <Leaf {...props} />, []);
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
 
-  return (
-    <Field focus={focus} label="body" className="">
-      <Slate
-        editor={editor}
-        value={value}
-        onChange={(value) => {
-          setValue(value);
-          onChange(value);
-        }}
-      >
-        <Toolbar>
-          <ToolbarItem
-            className="editorIcon mark"
-            active={isMarkActive(editor, 'bold')}
-            Icon={FaBold}
-            format="bold"
-            onClick={(event) => {
-              const format = 'bold';
-              event.preventDefault();
-              event.stopPropagation();
-              toggleMark(editor, format);
-            }}
-          />
-          <ToolbarItem
-            className="editorIcon mark"
-            active={isMarkActive(editor, 'italic')}
-            Icon={FaItalic}
-            format="italic"
-            onClick={(event) => {
-              const format = 'italic';
-              event.preventDefault();
-              event.stopPropagation();
-              toggleMark(editor, format);
-            }}
-          />
-          <ToolbarItem
-            className="editorIcon mark"
-            active={isMarkActive(editor, 'underline')}
-            Icon={FaUnderline}
-            format="underline"
-            onClick={(event) => {
-              const format = 'underline';
-              event.preventDefault();
-              event.stopPropagation();
-              toggleMark(editor, format);
-            }}
-          />
-          <ToolbarItem
-            className="editorIcon mark"
-            active={isMarkActive(editor, 'code')}
-            Icon={FaCode}
-            format="code"
-            onClick={(event) => {
-              const format = 'code';
-              event.preventDefault();
-              event.stopPropagation();
-              toggleMark(editor, format);
-            }}
-          />
+  useEffect(() => {
+    if (rawContent && readOnly) {
+      setContent(JSON.parse(rawContent));
+    } else {
+      setContent([{ children: [{ text: '' }], type: 'paragraph' }]);
+    }
+  }, []);
 
-          <ToolbarItem
-            className="editorIcon eblock"
-            active={isBlockActive(editor, 'heading')}
-            Icon={FaHeading}
-            format="heading"
-            onClick={(event) => {
-              const format = 'heading';
-              event.preventDefault();
-              event.stopPropagation();
-              toggleBlock(editor, format);
-            }}
-          />
-          <ToolbarItem
-            className="editorIcon eblock"
-            active={isBlockActive(editor, 'block-quote')}
-            Icon={FaQuoteRight}
-            format="block-quote"
-            onClick={(event) => {
-              const format = 'block-quote';
-              event.preventDefault();
-              event.stopPropagation();
-              toggleBlock(editor, format);
-            }}
-          />
-          <ToolbarItem
-            className="editorIcon eblock"
-            active={isBlockActive(editor, 'numbered-list')}
-            Icon={FaListOl}
-            format="numbered-list"
-            onClick={(event) => {
-              const format = 'numbered-list';
-              event.preventDefault();
-              event.stopPropagation();
-              toggleBlock(editor, format);
-            }}
-          />
-          <ToolbarItem
-            className="editorIcon eblock"
-            active={isBlockActive(editor, 'bulleted-list')}
-            Icon={FaListUl}
-            format="bulleted-list"
-            onClick={(event) => {
-              const format = 'bulleted-list';
-              event.preventDefault();
-              event.stopPropagation();
-              toggleBlock(editor, format);
-            }}
-          />
-        </Toolbar>
-        <div className="w-full py-2 min-h-[12rem]">
-          <Editable
-            className="text-md font-normal min-h-[12rem] text-slate-800 dark:text-slate-100"
-            renderElement={renderElement}
-            renderLeaf={renderLeaf}
-            placeholder="Enter your message here"
-            spellCheck
-            onKeyDown={(event) => {
-              for (const hotkey in HOTKEYS) {
-                if (isHotkey(hotkey, event)) {
+  return (
+    content && (
+      <Field focus={focus} label={label} required={required}>
+        <Slate
+          className="static"
+          editor={editor}
+          value={content}
+          onChange={(v) => {
+            if (!readOnly) {
+              onChange(v);
+            }
+          }}
+        >
+          {!readOnly && (
+            <Toolbar>
+              <ToolbarItem
+                className="editorIcon mark"
+                active={isMarkActive(editor, 'bold')}
+                Icon={FaBold}
+                format="bold"
+                onClick={(event) => {
+                  const format = 'bold';
                   event.preventDefault();
-                  const mark = HOTKEYS[hotkey];
-                  toggleMark(editor, mark);
+                  toggleMark(editor, format);
+                  document.getElementById('editable').focus();
+                }}
+              />
+              <ToolbarItem
+                className="editorIcon mark"
+                active={isMarkActive(editor, 'italic')}
+                Icon={FaItalic}
+                format="italic"
+                onClick={(event) => {
+                  const format = 'italic';
+                  event.preventDefault();
+                  toggleMark(editor, format);
+                  document.getElementById('editable').focus();
+                }}
+              />
+              <ToolbarItem
+                className="editorIcon mark"
+                active={isMarkActive(editor, 'underline')}
+                Icon={FaUnderline}
+                format="underline"
+                onClick={(event) => {
+                  const format = 'underline';
+                  event.preventDefault();
+                  toggleMark(editor, format);
+                  document.getElementById('editable').focus();
+                }}
+              />
+              <ToolbarItem
+                className="editorIcon mark"
+                active={isMarkActive(editor, 'code')}
+                Icon={FaCode}
+                format="code"
+                onClick={(event) => {
+                  const format = 'code';
+                  event.preventDefault();
+                  toggleMark(editor, format);
+                  document.getElementById('editable').focus();
+                }}
+              />
+
+              <ToolbarItem
+                className="editorIcon eblock"
+                active={isBlockActive(editor, 'heading')}
+                Icon={FaHeading}
+                format="heading"
+                onClick={(event) => {
+                  const format = 'heading';
+                  event.preventDefault();
+                  toggleBlock(editor, format);
+                  document.getElementById('editable').focus();
+                }}
+              />
+              <ToolbarItem
+                className="editorIcon eblock"
+                active={isBlockActive(editor, 'block-quote')}
+                Icon={FaQuoteRight}
+                format="block-quote"
+                onClick={(event) => {
+                  const format = 'block-quote';
+                  event.preventDefault();
+                  toggleBlock(editor, format);
+                  document.getElementById('editable').focus();
+                }}
+              />
+              <ToolbarItem
+                className="editorIcon eblock"
+                active={isBlockActive(editor, 'numbered-list')}
+                Icon={FaListOl}
+                format="numbered-list"
+                onClick={(event) => {
+                  const format = 'numbered-list';
+                  event.preventDefault();
+                  toggleBlock(editor, format);
+                  document.getElementById('editable').focus();
+                }}
+              />
+              <ToolbarItem
+                className="editorIcon eblock"
+                active={isBlockActive(editor, 'bulleted-list')}
+                Icon={FaListUl}
+                format="bulleted-list"
+                onClick={(event) => {
+                  const format = 'bulleted-list';
+                  event.preventDefault();
+                  toggleBlock(editor, format);
+                  document.getElementById('editable').focus();
+                }}
+              />
+            </Toolbar>
+          )}
+          <div className="static w-full py-2 min-h-[10rem]">
+            <Editable
+              id="editable"
+              readOnly={readOnly}
+              onFocus={() => setFocus(true)}
+              onBlur={() => setFocus(false)}
+              className=" static after:text-lg block placeholder:text-blue-500 min-h-[10rem] hover:cursor-text font-normal
+             text-slate-800 dark:text-slate-100"
+              renderElement={renderElement}
+              renderLeaf={renderLeaf}
+              spellCheck
+              onKeyDown={(event) => {
+                for (const hotkey in HOTKEYS) {
+                  if (isHotkey(hotkey, event)) {
+                    event.preventDefault();
+                    const mark = HOTKEYS[hotkey];
+                    toggleMark(editor, mark);
+                  }
                 }
-              }
-            }}
-          />
-        </div>
-      </Slate>
-    </Field>
+              }}
+            />
+          </div>
+        </Slate>
+      </Field>
+    )
   );
 }
 
 MarkdownWidget.propTypes = {
-  onChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func,
+  name: PropTypes.string,
+  label: PropTypes.string.isRequired,
+  required: PropTypes.bool,
+  readOnly: PropTypes.bool,
+  rawContent: PropTypes.string,
 };

@@ -12,9 +12,10 @@ export default function useFeed() {
       results.sort((a, b) => b.dateCreated - a.dateCreated);
       setFeed(results);
     }
-    if (feed === null) {
-      getFeed();
-    }
+    // if (feed === null) {
+    getFeed();
+    // }
+    console.log('this fired');
   }, []);
   return { feed };
 }

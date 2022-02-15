@@ -14,6 +14,6 @@ export default function ToolbarItem({ className = '', active, Icon, onClick }) {
 ToolbarItem.propTypes = {
   className: PropTypes.string,
   active: PropTypes.bool.isRequired,
-  Icon: PropTypes.object.isRequired,
+  Icon: PropTypes.func.isRequired,
   onClick: PropTypes.func.isRequired,
 };

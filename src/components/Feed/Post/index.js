@@ -4,18 +4,23 @@ import Header from './Header';
 import Actions from './Actions';
 import Comments from './Comments';
 import useUser from '../../../hooks/useUser';
+import MarkdownWidget from '../../TextEditor/MarkdownWidget';
+import ReadOnlyEditor from '../../TextEditor/ReadOnlyEditor';
 
 export default function Post({
   message: {
     subject,
     author,
     comments,
+    subtitle,
     content,
     dateCreated,
     recipients,
     userId,
+    richText,
     docId,
   },
+  isEditorOpen,
 }) {
   const { user } = useUser();
   const commentInput = useRef(null);
@@ -40,8 +45,21 @@ export default function Post({
   if (user?.username) {
     return (
       <div className="container p-3 rounded mb-3 shadow bg-white dark:bg-darkGray-500">
-        <Header author={author} subject={subject} dateCreated={dateCreated} />
-        <p className="text-md text-slate-700 dark:text-slate-100">{content}</p>
+        <Header
+          author={author}
+          subject={subject}
+          subtitle={subtitle}
+          dateCreated={dateCreated}
+        />
+        {richText && !isEditorOpen ? (
+          <div className={isEditorOpen && 'relative -z-50'}>
+            <ReadOnlyEditor content={content} />
+          </div>
+        ) : (
+          <p className="text-md text-slate-700 dark:text-slate-100">
+            {content}
+          </p>
+        )}
         <Actions
           setCommentsExpanded={setCommentsExpanded}
           numComments={numComments}
@@ -67,6 +85,8 @@ export default function Post({
 Post.propTypes = {
   message: PropTypes.shape({
     subject: PropTypes.string,
+    richText: PropTypes.bool,
+    subtitle: PropTypes.string,
     author: PropTypes.string,
     comments: PropTypes.array,
     content: PropTypes.string,
@@ -75,4 +95,5 @@ Post.propTypes = {
     userId: PropTypes.string,
     docId: PropTypes.string,
   }).isRequired,
+  isEditorOpen: PropTypes.bool.isRequired,
 };
