@@ -13,7 +13,7 @@ import { addMessage } from '../../services/firebase-services';
 
 export default function Feed() {
   const { user } = useUser();
-  const { feed } = useContext(UserContext);
+  const { feed, updateFeed } = useContext(UserContext);
   // Mobile responsive. By default hidden on mobile sizes
   const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [isEditorOpenOnMobile, setIsEditorOpenOnMobile] = useState(false);
@@ -33,10 +33,8 @@ export default function Feed() {
   const handlePost = async ({ entry }) => {
     // event.preventDefault();
     toggleEditor();
-
     await addMessage(user.userId, user.username, entry);
-
-    console.log('posted');
+    updateFeed();
   };
 
   return (

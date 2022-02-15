@@ -24,10 +24,10 @@ const Reports = lazy(() => import('./pages/Reports'));
 function App() {
   const { isDarkMode } = useDarkMode();
   const { user } = useAuthListener();
-  const { feed } = useFeed();
+  const { feed, updateFeed } = useFeed();
   return (
     <ThemeContext.Provider value={{ isDarkMode }}>
-      <UserContext.Provider value={{ user, feed }}>
+      <UserContext.Provider value={{ user, feed, updateFeed }}>
         <div className="antialiased bg-lightGray-600 dark:bg-darkGray-700 text-slate-900 dark:text-slate-100">
           <Router>
             <Suspense fallback={<p>Loading...</p>}>

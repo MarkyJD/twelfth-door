@@ -3,6 +3,10 @@ import { getAnnouncements } from '../services/firebase-services';
 
 export default function useFeed() {
   const [feed, setFeed] = useState(null);
+  const [update, setUpdate] = useState(0);
+  const updateFeed = () => {
+    setUpdate((prev) => prev + 1);
+  };
   // const { user } = useContext(UserContext);
 
   useEffect(() => {
@@ -16,6 +20,7 @@ export default function useFeed() {
     getFeed();
     // }
     console.log('this fired');
-  }, []);
-  return { feed };
+  }, [update]);
+
+  return { feed, updateFeed };
 }

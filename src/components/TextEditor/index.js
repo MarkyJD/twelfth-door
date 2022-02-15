@@ -17,7 +17,7 @@ export default function TextEditor({
   const [isValid, setIsValid] = useState(false);
   const [value, setValue] = useState({
     entry: {},
-    debug: true,
+    debug: false,
   });
 
   const [users, setUsers] = useState([]);

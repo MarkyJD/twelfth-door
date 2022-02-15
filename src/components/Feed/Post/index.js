@@ -52,7 +52,7 @@ export default function Post({
           dateCreated={dateCreated}
         />
         {richText && !isEditorOpen ? (
-          <div className={isEditorOpen && 'relative -z-50'}>
+          <div>
             <ReadOnlyEditor content={content} />
           </div>
         ) : (
