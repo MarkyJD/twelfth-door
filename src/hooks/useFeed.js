@@ -15,11 +15,11 @@ export default function useFeed() {
       // console.log(results);
       results.sort((a, b) => b.dateCreated - a.dateCreated);
       setFeed(results);
+      console.log(results);
     }
     // if (feed === null) {
     getFeed();
     // }
-    console.log('this fired');
   }, [update]);
 
   return { feed, updateFeed };

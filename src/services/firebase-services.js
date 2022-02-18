@@ -125,7 +125,7 @@ export async function addMessage(userId, username, rawMessage) {
     author: username,
     comments: [],
     richText: true,
-    content: JSON.stringify(rawMessage.body),
+    content: rawMessage.body,
     dateCreated: Date.now(),
     recipients: rawMessage.recipients.map((recipient) => recipient.value),
     subject: rawMessage.title,

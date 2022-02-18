@@ -60,9 +60,9 @@ export default function Header({ toggleOpen }) {
         {user && (
           <div className="text-center mx-1 ml-3 flex items-center">
             <Link to={'/'}>
-              <h2 className="text-slate-200 p-1 font-bold text-md text-shadow hover:text-lightBlue-100 cursor-pointer font-mono">
+              <p className="text-slate-200 p-1 font-bold text-md text-shadow hover:text-lightBlue-100 cursor-pointer font-mono">
                 {user.displayName}
-              </h2>
+              </p>
             </Link>
           </div>
         )}
@@ -96,7 +96,7 @@ export default function Header({ toggleOpen }) {
               className="p-1 flex items-center space-x-1 cursor-pointer"
             >
               <BiUserCircle className="icon h-6" />
-              <h2>Profile</h2>
+              <p>Profile</p>
             </div>
           </div>
           <div className="border-b border-slate-600 w-11/12" />
@@ -111,7 +111,7 @@ export default function Header({ toggleOpen }) {
               ) : (
                 <BiMoon className="icon h-6 hover:text-blue-500" />
               )}
-              <h2>{isDarkMode ? 'Light' : 'Dark'}</h2>
+              <p>{isDarkMode ? 'Light' : 'Dark'}</p>
             </div>
           </div>
           <div className="border-b border-slate-600 w-11/12" />
@@ -122,7 +122,7 @@ export default function Header({ toggleOpen }) {
               className="p-1 flex items-center space-x-1 cursor-pointer"
             >
               <BiCog className="icon h-6" />
-              <h2>Settings</h2>
+              <p>Settings</p>
             </div>
           </div>
           <div className="border-b border-slate-600 w-11/12" />
@@ -132,7 +132,7 @@ export default function Header({ toggleOpen }) {
               onClick={handleSignout}
             >
               <BiExit className="icon h-6" />
-              <h2>Log Out</h2>
+              <p>Log Out</p>
             </div>
           </div>
         </div>

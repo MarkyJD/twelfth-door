@@ -30,13 +30,13 @@ export default function Sidebar({
     <div className="sidebar relative flex flex-col h-full px-3 first:px-0 ">
       <header className={`flex justify-between items-center h-16 px-3 `}>
         <Link className="flex items-center" to={ROUTES.HOME}>
-          <h1
-            className={`text-white text-lg text-shadow-lg font-title p-1 hover:text-lightBlue-100 ${
+          <p
+            className={`text-white text-lg text-shadow font-title p-1 hover:text-lightBlue-100 ${
               !expanded && ' ml-3.5'
             }`}
           >
             {expanded ? 'Twelfth Door' : 'td'}
-          </h1>
+          </p>
         </Link>
         <div className="w-8">
           {open && (

@@ -89,7 +89,7 @@ export default function Feed() {
         isValidPost={isValidPost}
         handlePost={handlePost}
       />
-      <Footer />
+      <Footer label="Load More" onClick={updateFeed} />
     </div>
   );
 }

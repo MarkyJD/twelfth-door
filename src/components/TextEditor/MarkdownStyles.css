@@ -1,0 +1,45 @@
+.toolbarClass {
+  background-color: white;
+  border: none;
+  color: black;
+  border-bottom: 1px solid #d7dfe8;
+}
+
+.editorClass {
+  min-height: 10rem;
+  background-color: white;
+  color: black;
+  padding: 0 12px;
+  margin-bottom: 12px;
+}
+
+.rdw-option-wrapper {
+  border: none;
+  height: 30px;
+  width: 30px;
+  margin: 0;
+  border-radius: 2px;
+}
+.rdw-option-wrapper:hover {
+  box-shadow: none;
+  /* box-shadow: 5px 5px 15px 5px rgba(0, 0, 0, 0.09); */
+  background: #dddddd;
+}
+.rdw-option-wrapper:active {
+  box-shadow: none;
+  background: #dddddd;
+}
+.rdw-option-active {
+  box-shadow: none;
+  background: #dddddd;
+}
+.rdw-option-disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.rdw-option-disabled:hover {
+  opacity: 0.3;
+  cursor: default;
+  background: transparent;
+}

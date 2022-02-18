@@ -34,7 +34,7 @@ export default function TextEditor({
   useEffect(() => {
     const { entry } = value;
     if (entry.title && entry.recipients && entry.body) {
-      if (entry.recipients.length >= 1 && entry.body[0].children[0].text) {
+      if (entry.recipients.length >= 1) {
         setIsValid(true);
       } else {
         setIsValid(false);
@@ -70,12 +70,12 @@ export default function TextEditor({
 
   return (
     users && (
-      <div className="h-full overflow-auto relative z-50">
+      <div className="h-full overflow-auto ">
         <div className="w-full h-14 pt-2 px-2 bg-slate-700 rounded">
           <div className="py-1 mb-1 max-w-screen-md mx-auto flex items-center justify-between">
-            <h2 className="text-xl font-thin font-title text-blue-400 dark:text-blue-500 text-shadow-none">
+            <p className="text-xl font-thin font-title text-blue-400 dark:text-blue-500 text-shadow-none">
               Create Message
-            </h2>
+            </p>
             <BiX
               className="icon text-white hover:bg-slate-500 rounded"
               onClick={() => toggleEditor(isEditorOpenOnMobile)}
@@ -133,7 +133,7 @@ export default function TextEditor({
             Post
           </button>
         </div>
-        {debug && <DebugWidget data={entry} />}
+        {debug && <DebugWidget data={entry.body} />}
       </div>
     )
   );

@@ -32,27 +32,27 @@ export default function Comments({
       {commentsExpanded && comments.length > 0 ? (
         localComments.map((comment, i) => (
           <div key={i} className="flex flex-col mb-3 ">
-            <h3 className="font-bold text-sm">
+            <p className="font-bold text-sm">
               {comment.username}{' '}
               <span className="text-xs font-normal text-slate-500">
                 {formatDistance(comment.dateCreated, new Date(), {
                   addSuffix: true,
                 })}
               </span>
-            </h3>
+            </p>
             <p className="text-sm">{comment.comment}</p>
           </div>
         ))
       ) : comments.length > 0 ? (
         <div className="flex flex-col mb-3">
-          <h3 className="font-bold text-sm">
+          <p className="font-bold text-sm">
             {localComments[0].username}{' '}
             <span className="text-xs font-normal text-slate-500">
               {formatDistance(localComments[0].dateCreated, Date.now(), {
                 addSuffix: true,
               })}
             </span>
-          </h3>
+          </p>
           <p className="text-sm">{localComments[0].comment}</p>
         </div>
       ) : null}
