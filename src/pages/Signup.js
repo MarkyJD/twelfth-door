@@ -41,9 +41,9 @@ export default function Signup() {
         </div>
         <div className="w-full pt-10 md:p-0 md:w-1/2 flex flex-col justify-center bg-lightGray-700 dark:bg-darkGray-500 ">
           <div className="w-5/6 flex px-5 mx-auto flex-col items-center">
-            <h1 className="text-3xl text-shadow-md font-title mb-3">
+            <p className="text-3xl text-shadow-md font-title mb-3">
               Twelfth Door
-            </h1>
+            </p>
             <p className="text-lg mb-3 font-light italic text-lightGray-100">
               There are
               <span className="text-purple-700 dark:text-purple-400">

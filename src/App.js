@@ -1,6 +1,6 @@
 /* eslint-disable */
 /* eslint-disable react/jsx-no-constructed-context-values */
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import * as ROUTES from './constants/Routes';
 import Layout from './pages/templates/Layout';
@@ -11,7 +11,6 @@ import UserContext from './context/UserContext';
 import IsLoggedInRoute from './helpers/IsLoggedInRoute';
 import ProtectedRoute from './helpers/ProtectedRoute';
 import useFeed from './hooks/useFeed';
-import { generateSchema, seedDatabase } from './mock_data/seed';
 
 const Login = lazy(() => import('./pages/Login'));
 const NotFound = lazy(() => import('./pages/NotFound'));
@@ -25,10 +24,10 @@ const Reports = lazy(() => import('./pages/Reports'));
 function App() {
   const { isDarkMode } = useDarkMode();
   const { user } = useAuthListener();
-  const { feed } = useFeed();
+  const { feed, updateFeed } = useFeed();
   return (
     <ThemeContext.Provider value={{ isDarkMode }}>
-      <UserContext.Provider value={{ user, feed }}>
+      <UserContext.Provider value={{ user, feed, updateFeed }}>
         <div className="antialiased bg-lightGray-600 dark:bg-darkGray-700 text-slate-900 dark:text-slate-100">
           <Router>
             <Suspense fallback={<p>Loading...</p>}>

@@ -9,3 +9,4 @@ export const REPORTS = '/reports';
 export const SETTINGS = '/settings';
 export const PROFILE = '/profile';
 export const ADMIN = '/admin';
+export const FORGOT_PASSWORD = '/forgot-password';

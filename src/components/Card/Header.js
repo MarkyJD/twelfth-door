@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 export default function Header({ title }) {
   return (
     <header>
-      <h2 className="font-semibold text-slate-500">{title}</h2>
+      <p className="text-lg font-semibold text-slate-500">{title}</p>
     </header>
   );
 }

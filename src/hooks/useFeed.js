@@ -3,6 +3,10 @@ import { getAnnouncements } from '../services/firebase-services';
 
 export default function useFeed() {
   const [feed, setFeed] = useState(null);
+  const [update, setUpdate] = useState(0);
+  const updateFeed = () => {
+    setUpdate((prev) => prev + 1);
+  };
   // const { user } = useContext(UserContext);
 
   useEffect(() => {
@@ -11,10 +15,12 @@ export default function useFeed() {
       // console.log(results);
       results.sort((a, b) => b.dateCreated - a.dateCreated);
       setFeed(results);
+      console.log(results);
     }
-    if (feed === null) {
-      getFeed();
-    }
-  }, []);
-  return { feed };
+    // if (feed === null) {
+    getFeed();
+    // }
+  }, [update]);
+
+  return { feed, updateFeed };
 }

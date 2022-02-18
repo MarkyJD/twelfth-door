@@ -30,7 +30,7 @@ export default function NavItem({
       } ${!expanded && ' justify-center'}`}
     >
       <Icon className="icon" />
-      {expanded && <h2>{title}</h2>}
+      {expanded && <p>{title}</p>}
     </div>
   );
 }
