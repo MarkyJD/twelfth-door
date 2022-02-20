@@ -63,7 +63,7 @@ export default function Feed() {
             </div>
           </div>
         ) : (
-          <div className="hidden md:flex items-center mb-2 space-x-2 font-sm text-gray-600 dark:text-gray-400">
+          <div className="hidden md:flex items-center mb-3 mt-3 space-x-2 font-sm text-gray-600 dark:text-gray-400">
             <button
               type="button"
               className="font-bold text-sm text-white py-2 px-3 bg-blue-600 dark:bg-blue-600  hover:bg-blue-700 dark:hover:bg-blue-500 border-lightGray-400 dark:border-darkGray-400 outline-lightBlue-200 rounded"

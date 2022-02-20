@@ -138,3 +138,21 @@ export async function addMessage(userId, username, rawMessage) {
 
   return docRef;
 }
+
+export async function getCurrentJobs() {
+  const jobsRef = collection(db, 'jobs');
+  const q = query(jobsRef, where('status', '!=', 'complete'));
+
+  const querySnapshot = await getDocs(q);
+
+  const results = [];
+
+  querySnapshot.forEach((doc) => {
+    results.push({
+      ...doc.data(),
+      docId: doc.id,
+    });
+  });
+
+  return results;
+}
