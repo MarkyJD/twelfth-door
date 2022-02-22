@@ -2,11 +2,7 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { useAsyncDebounce } from 'react-table';
 
-export default function GlobalFilter({
-  preGlobalFilteredRows,
-  globalFilter,
-  setGlobalFilter,
-}) {
+export default function GlobalFilter({ globalFilter, setGlobalFilter }) {
   const [value, setValue] = useState(globalFilter);
   const onChange = useAsyncDebounce((value) => {
     setGlobalFilter(value || undefined);
@@ -27,6 +23,5 @@ export default function GlobalFilter({
 
 GlobalFilter.propTypes = {
   globalFilter: PropTypes.string,
-  setGlobalFilter: PropTypes.func,
-  preGlobalFilteredRows: PropTypes.array,
+  setGlobalFilter: PropTypes.func.isRequired,
 };

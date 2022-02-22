@@ -18,6 +18,7 @@ export default function Feed() {
   const [isEditorOpen, setIsEditorOpen] = useState(false);
   const [isEditorOpenOnMobile, setIsEditorOpenOnMobile] = useState(false);
   const [isValidPost, setIsValidPost] = useState(false);
+  const [contentForMobile, setContentForMobile] = useState({});
 
   const setFAB = (isValid) => {
     setIsValidPost(isValid);
@@ -39,6 +40,7 @@ export default function Feed() {
 
   return (
     <div className="w-full p-3 ">
+      {console.log(contentForMobile)}
       <Header title="Announcements" />
       <section className="py-1">
         {isEditorOpen ? (
@@ -59,6 +61,7 @@ export default function Feed() {
                 setFAB={setFAB}
                 isEditorOpenOnMobile={isEditorOpenOnMobile}
                 handlePost={handlePost}
+                setContentForMobile={setContentForMobile}
               />
             </div>
           </div>
@@ -84,6 +87,7 @@ export default function Feed() {
         )}
       </main>
       <FloatingButton
+        contentForMobile={contentForMobile}
         toggleEditor={toggleEditor}
         isEditorOpen={isEditorOpen}
         isValidPost={isValidPost}

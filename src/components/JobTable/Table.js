@@ -92,6 +92,10 @@ export default function Table({
     {
       columns,
       data,
+
+      initialState: {
+        hiddenColumns: ['department', 'status', 'description', 'tags'],
+      },
       stateReducer: (newState, action, prevState) => {
         if (action.type === 'toggleRowSelected') {
           if (prevState.selectedRowIds[action.id] === true) {
@@ -115,27 +119,25 @@ export default function Table({
   );
 
   const { globalFilter, selectedRowIds } = state;
+  const total = preGlobalFilteredRows.length;
+  const current = rows.length;
 
   return (
     <div>
-      <div className="mt-3 mb-3 flex justify-between">
-        <button
-          type="button"
-          className="font-bold text-sm text-white py-2 px-3 bg-blue-600 dark:bg-blue-600  hover:bg-blue-700 dark:hover:bg-blue-500 border-lightGray-400 dark:border-darkGray-400 outline-lightBlue-200 rounded"
-          onClick={() => {}}
-        >
-          Create Job
-        </button>
+      <div className=" mb-3 flex space-x-3 items-center">
         <label className="">
           Search:{' '}
           <GlobalFilter
             globalFilter={globalFilter}
             setGlobalFilter={setGlobalFilter}
-            preGlobalFilteredRows={preGlobalFilteredRows}
           />
         </label>
+        <p className="font-semibold text-slate-500 font-mono">
+          <span className="font-normal">{current}</span>
+          {` / ${total}`}
+        </p>
       </div>
-      <table className="border w-full" {...getTableProps()}>
+      <table className="border w-full " {...getTableProps()}>
         <thead>
           {headerGroups.map((headerGroup) => (
             <tr

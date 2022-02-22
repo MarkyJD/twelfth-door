@@ -2,7 +2,12 @@
 import formatDistance from 'date-fns/formatDistance';
 import StatusPill from '../components/JobTable/StatusPill';
 
-const allColumns = [
+export const allColumns = [
+  {
+    Header: '#',
+    accessor: 'jobNo',
+    className: 'text-xs font-semibold',
+  },
   {
     Header: 'Priority',
     accessor: 'priority',
@@ -35,6 +40,24 @@ const allColumns = [
       formatDistance(new Date(value), new Date(), { addSuffix: true }),
     className: 'text-xs',
   },
+  // All below columns will be Hidden by default
+  {
+    Header: 'Department',
+    accessor: 'department',
+  },
+  {
+    Header: 'Status',
+    accessor: 'status',
+  },
+  {
+    Header: 'Description',
+    accessor: 'description',
+  },
+  {
+    Header: 'Tags',
+    accessor: 'tags',
+    Cell: ({ value }) => value.join(' '),
+  },
 ];
 
 const compactColumns = [
@@ -65,6 +88,24 @@ const compactColumns = [
     Cell: ({ value }) =>
       formatDistance(new Date(value), new Date(), { addSuffix: true }),
     className: 'text-xs',
+  },
+  // All below columns will be hidden
+  {
+    Header: 'Department',
+    accessor: 'department',
+  },
+  {
+    Header: 'Status',
+    accessor: 'status',
+  },
+  {
+    Header: 'Description',
+    accessor: 'description',
+  },
+  {
+    Header: 'Tags',
+    accessor: 'tags',
+    Cell: ({ value }) => value.join(' '),
   },
 ];
 

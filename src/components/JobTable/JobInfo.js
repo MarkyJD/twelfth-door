@@ -21,7 +21,12 @@ export default function JobInfo({ activeJob }) {
   return (
     <div className="w-full p-3">
       <p className="font-serif mb-3 text-semibold text-lg p-2 text-white bg-slate-700 rounded shadow">
-        Job Overview
+        {`Job #${jobNo} | `}
+        <span className="text-xs font-sans">
+          {formatDistance(new Date(dateCreated), new Date(), {
+            addSuffix: true,
+          })}
+        </span>
       </p>
 
       <p className="font-bold text-lg text-slate-600 dark:text-slate-300">

@@ -23,7 +23,7 @@ export default function Layout() {
       }`}
     >
       <aside
-        className={`bg-slate-800 shadow-xl border-r-2 border-slate-700 fixed inset-y-0 left-0 transform md:translate-x-0 -translate-x-full transition-all duration-200 ease-in-out ${
+        className={`bg-slate-800 shadow-xl border-r-2 border-slate-700 fixed z-50 inset-y-0 left-0 transform md:translate-x-0 -translate-x-full transition-all duration-200 ease-in-out ${
           expanded ? 'w-48' : 'w-20'
         } ${open && ' w-48 translate-x-0'}`}
       >

@@ -18,7 +18,7 @@ export default function Field({
     >
       <div className="px-3 md:px-0 max-w-screen-md mx-auto">
         <label className="text-sm font-semibold text-slate-600 dark:text-slate-400">
-          {required ? `*${label}` : label}
+          {required ? `${label}*` : label}
           {children}
         </label>
       </div>

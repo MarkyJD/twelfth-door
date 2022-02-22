@@ -19,7 +19,7 @@ export default function StatusPill({ priority, className }) {
 
   return (
     <div
-      className={`${statusStyles} ${className} w-full uppercase text-xs px-1 text-center py-1 shadow-md  text-white rounded-3xl`}
+      className={`${statusStyles} w-full ${className} uppercase text-xs px-1 text-center py-1 shadow-md  text-white rounded-3xl`}
     >
       {priority}
     </div>

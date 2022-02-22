@@ -7,10 +7,11 @@ export default function FloatingButton({
   isValidPost,
   handlePost,
   toggleEditor,
+  contentForMobile,
 }) {
   const handleFABClick = () => {
     if (isValidPost) {
-      handlePost();
+      handlePost(contentForMobile);
     }
     if (!isEditorOpen) {
       toggleEditor(true);
@@ -46,8 +47,9 @@ export default function FloatingButton({
 }
 
 FloatingButton.propTypes = {
-  isEditorOpen: PropTypes.bool.isRequired,
-  isValidPost: PropTypes.bool.isRequired,
-  handlePost: PropTypes.func.isRequired,
-  toggleEditor: PropTypes.func.isRequired,
+  isEditorOpen: PropTypes.bool,
+  isValidPost: PropTypes.bool,
+  handlePost: PropTypes.func,
+  toggleEditor: PropTypes.func,
+  contentForMobile: PropTypes.object.isRequired,
 };
