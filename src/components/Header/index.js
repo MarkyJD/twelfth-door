@@ -80,7 +80,7 @@ export default function Header({ toggleOpen }) {
         </div>
       </div>
       <div
-        className={`bg-slate-700 text-sm w-36 rounded-lg shadow-lg absolute flex flex-col items-center top-14 right-3 transform transition duration-200 ease-in-out -translate-y-72 ${
+        className={`bg-slate-700 text-sm w-36 rounded-lg shadow-lg absolute z-50 flex flex-col items-center top-14 right-3 transform transition duration-200 ease-in-out -translate-y-72 ${
           dropdownOpen && ' translate-y-0'
         }`}
       >

@@ -18,39 +18,52 @@ const customStyles = {
   }),
 };
 
-export default function RecipientsWidget({ name, label, onChange, options }) {
+export default function RecipientsWidget({
+  name,
+  label,
+  onChange,
+  options,
+  mode = 'message',
+}) {
   const [focus, setFocus] = useState();
-  const users = [
-    {
-      value: '@everyone',
-      label: '@everyone',
-    },
-    {
-      value: '@grounds',
-      label: '@grounds',
-    },
-    {
-      value: '@housekeeping',
-      label: '@housekeeping',
-    },
-    {
-      value: '@reception',
-      label: '@reception',
-    },
-    {
-      value: '@maintenance',
-      label: '@maintenance',
-    },
-    {
-      value: '@management',
-      label: '@management',
-    },
-  ];
+  const users =
+    mode === 'message'
+      ? [
+          {
+            value: '@everyone',
+            label: '@everyone',
+          },
+          {
+            value: '@grounds',
+            label: '@grounds',
+          },
+          {
+            value: '@housekeeping',
+            label: '@housekeeping',
+          },
+          {
+            value: '@reception',
+            label: '@reception',
+          },
+          {
+            value: '@maintenance',
+            label: '@maintenance',
+          },
+          {
+            value: '@management',
+            label: '@management',
+          },
+        ]
+      : [];
 
   const handleSelect = (selected) => {
     const lastIndex = selected.length - 1;
 
-    if (selected[lastIndex] && selected[lastIndex].value.includes('@')) {
+    if (
+      mode === 'message' &&
+      selected[lastIndex] &&
+      selected[lastIndex].value.includes('@')
+    ) {
       const searchString = selected[lastIndex].value.substring(1);
       let results = options;
       if (searchString !== 'everyone') {
@@ -68,7 +81,8 @@ export default function RecipientsWidget({ name, label, onChange, options }) {
       onChange([...selected, ...temp]);
       return [...selected, ...temp];
     }
-    onChange(selected);
+
+    onChange(mode === 'job' ? selected.value : selected);
     return selected;
   };
 
@@ -88,11 +102,11 @@ export default function RecipientsWidget({ name, label, onChange, options }) {
   return (
     <Field focus={focus} label={label} required>
       <Select
-        className="text-slate-900 font-normal ml-[-10px] "
+        className="text-slate-900 font-normal ml-[-10px] relative z-20"
         options={users}
-        isMulti
+        isMulti={mode !== 'job'}
         tabSelectsValue={false}
-        closeMenuOnSelect={false}
+        closeMenuOnSelect={mode === 'job'}
         styles={customStyles}
         onMenuOpen={() => setFocus(true)}
         onBlur={() => setFocus(false)}
@@ -108,4 +122,5 @@ RecipientsWidget.propTypes = {
   label: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   options: PropTypes.array.isRequired,
+  mode: PropTypes.string,
 };

@@ -9,11 +9,18 @@ export default function TextWidget({
   value,
   required = false,
   onChange,
+  className,
 }) {
   const [focus, setFocus] = useState(false);
 
   return (
-    <Field focus={focus} label={label} setFocus={setFocus} required={required}>
+    <Field
+      className={className}
+      focus={focus}
+      label={label}
+      setFocus={setFocus}
+      required={required}
+    >
       <input
         type="text"
         className={`h-full bg-transparent w-full py-2 outline-none text-slate-900 dark:text-slate-100 ${
@@ -36,4 +43,5 @@ TextWidget.propTypes = {
   value: PropTypes.string,
   required: PropTypes.bool,
   onChange: PropTypes.func.isRequired,
+  className: PropTypes.string,
 };

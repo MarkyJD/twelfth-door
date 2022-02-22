@@ -1,4 +1,5 @@
 /* eslint-disable import/no-cycle */
+import { v4 as uuidv4 } from 'uuid';
 import {
   collection,
   query,
@@ -137,4 +138,44 @@ export async function addMessage(userId, username, rawMessage) {
   const docRef = await addDoc(messagesRef, message);
 
   return docRef;
+}
+
+export async function addJob(username, rawJob, prevJobNo) {
+  const job = {
+    title: rawJob.title,
+    comments: [],
+    dateCreated: Date.now(),
+    department: rawJob.department.map((dept) => dept.value),
+    description: rawJob.description || '',
+    jobId: uuidv4(),
+    jobNo: prevJobNo + 1,
+    priority: rawJob.priority,
+    tags: rawJob?.tags ? rawJob.tags.map((tag) => tag.value) : [],
+    status: 'new',
+    responsible: rawJob.responsible,
+    requestedBy: username,
+  };
+
+  const jobsRef = collection(db, 'jobs');
+  const docRef = await addDoc(jobsRef, job);
+
+  return docRef;
+}
+
+export async function getCurrentJobs() {
+  const jobsRef = collection(db, 'jobs');
+  const q = query(jobsRef, where('status', '!=', 'complete'));
+
+  const querySnapshot = await getDocs(q);
+
+  const results = [];
+
+  querySnapshot.forEach((doc) => {
+    results.push({
+      ...doc.data(),
+      docId: doc.id,
+    });
+  });
+
+  return results;
 }
