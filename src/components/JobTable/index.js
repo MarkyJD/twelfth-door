@@ -14,12 +14,28 @@ import { getCurrentJobs, addJob } from '../../services/firebase-services';
 import FloatingButton from '../FloatingButton';
 import TextEditor from '../TextEditor';
 
-export default function JobTable({ updateActiveJob, setJobOverviewData }) {
+export default function JobTable({
+  updateActiveJob,
+  setJobOverviewData,
+  data,
+  setUpdate,
+  loading,
+}) {
+  const getWindowWidth = () => {
+    if (window.innerWidth <= 768) {
+      return 'sm';
+    }
+    if (window.innerWidth > 768 && window.innerWidth < 1536) {
+      return 'md';
+    }
+    if (window.innerWidth > 1536) {
+      return 'lg';
+    }
+  };
+
   const { user } = useUser();
-  const [data, setData] = useState([]);
-  const [update, setUpdate] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const [isDesktop, setDesktop] = useState(window.innerWidth > 1450);
+
+  const [windowWidth, setWindowWidth] = useState(getWindowWidth());
   const [contentForMobile, setContentForMobile] = useState({});
 
   const [isEditorOpen, setIsEditorOpen] = useState(false);
@@ -51,22 +67,8 @@ export default function JobTable({ updateActiveJob, setJobOverviewData }) {
     updateJobTable();
   };
 
-  useEffect(() => {
-    async function getData() {
-      const results = await getCurrentJobs();
-      results.sort((a, b) => b.dateCreated - a.dateCreated);
-      setData(results);
-      setJobOverviewData(results);
-      setLoading(false);
-    }
-
-    if (loading || update > 0) {
-      getData();
-    }
-  }, [update]);
-
   const updateMedia = () => {
-    setDesktop(window.innerWidth > 1450);
+    setWindowWidth(getWindowWidth());
   };
 
   useEffect(() => {
@@ -74,7 +76,7 @@ export default function JobTable({ updateActiveJob, setJobOverviewData }) {
     return () => window.removeEventListener('resize', updateMedia);
   });
 
-  const columns = useMemo(() => getColumns(isDesktop), [isDesktop]);
+  const columns = useMemo(() => getColumns(windowWidth), [windowWidth]);
 
   return !user || loading ? (
     <p>Loading...</p>
@@ -118,6 +120,7 @@ export default function JobTable({ updateActiveJob, setJobOverviewData }) {
       </section>
 
       <Table
+        windowWidth={windowWidth || ''}
         data={data}
         columns={columns}
         getRowProps={(row) => ({
@@ -146,4 +149,7 @@ export default function JobTable({ updateActiveJob, setJobOverviewData }) {
 JobTable.propTypes = {
   updateActiveJob: PropTypes.func.isRequired,
   setJobOverviewData: PropTypes.func.isRequired,
+  data: PropTypes.array.isRequired,
+  setUpdate: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
 };
