@@ -29,15 +29,18 @@ export const allColumns = [
   {
     Header: 'Requested By',
     accessor: 'requestedBy',
+    className: 'text-sm font-bold',
   },
   {
     Header: 'Responsible',
     accessor: 'responsible',
+    className: 'text-sm font-bold',
   },
   // All below columns will be Hidden by default
   {
     Header: 'Department',
     accessor: 'department',
+    className: 'uppercase text-xs font-semibold',
   },
   {
     Header: 'Status',
@@ -89,20 +92,23 @@ export const mediumColums = [
   {
     Header: 'Title',
     accessor: 'title',
-    className: 'font-semibold',
+    className: 'font-semibold text-sm',
   },
   {
     Header: 'Requested By',
     accessor: 'requestedBy',
+    className: 'text-sm font-bold',
   },
   {
     Header: 'Responsible',
     accessor: 'responsible',
+    className: 'text-sm font-bold',
   },
   // All below columns will be Hidden by default
   {
     Header: 'Department',
     accessor: 'department',
+    className: 'text-xs font-semibold uppercase',
   },
   {
     Header: 'Status',
@@ -142,11 +148,12 @@ const compactColumns = [
   {
     Header: 'Title',
     accessor: 'title',
-    className: 'font-semibold',
+    className: 'font-semibold text-sm',
   },
   {
     Header: 'Responsible',
     accessor: 'responsible',
+    className: 'text-sm font-bold',
   },
   {
     Header: 'Posted',

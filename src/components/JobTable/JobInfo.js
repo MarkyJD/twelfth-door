@@ -1,6 +1,7 @@
 import { format, formatDistance } from 'date-fns';
 import PropTypes from 'prop-types';
 import StatusPill from './StatusPill';
+import Tag from './Tag';
 
 export default function JobInfo({ activeJob }) {
   const {
@@ -33,9 +34,11 @@ export default function JobInfo({ activeJob }) {
         {title}
       </p>
 
-      <p className="font-semibold italic mb-3 text-gray-500 dark:text-gray-400">{`#${tags.join(
-        ' #'
-      )}`}</p>
+      <p className="font-semibold mb-3 flex flex-wrap">
+        {tags.map((tag, i) => (
+          <Tag key={i} tag={tag} />
+        ))}
+      </p>
 
       <p className="font-bold text-sm text-slate-800 dark:text-slate-200 mb-2">
         Description: <span className="font-normal">{description}</span>

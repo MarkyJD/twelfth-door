@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { format } from 'date-fns';
 import { getCurrentJobs } from '../services/firebase-services';
 import Feed from '../components/Feed';
-import LatestJobs from '../components/LatestJobs';
 import LatestProjections from '../components/LatestProjections';
 import JobOverview from '../components/JobTable/JobOverview';
 
