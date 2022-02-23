@@ -73,11 +73,30 @@ const defaultPropGetter = () => ({});
 export default function Table({
   columns,
   data,
+  windowWidth,
   getHeaderProps = defaultPropGetter,
   getColumnProps = defaultPropGetter,
   getRowProps = defaultPropGetter,
   getCellProps = defaultPropGetter,
 }) {
+  let hiddenColumns = ['department', 'status', 'description', 'tags'];
+  if (windowWidth === 'sm') {
+    hiddenColumns = [
+      'requestedBy',
+      'department',
+      'status',
+      'description',
+      'tags',
+    ];
+  }
+
+  if (windowWidth === 'md') {
+    hiddenColumns = ['status', 'description', 'tags'];
+  }
+
+  if (windowWidth === 'lg') {
+    hiddenColumns = ['status', 'description'];
+  }
   const {
     getTableProps,
     getTableBodyProps,
@@ -94,7 +113,7 @@ export default function Table({
       data,
 
       initialState: {
-        hiddenColumns: ['department', 'status', 'description', 'tags'],
+        hiddenColumns: hiddenColumns,
       },
       stateReducer: (newState, action, prevState) => {
         if (action.type === 'toggleRowSelected') {
@@ -108,6 +127,8 @@ export default function Table({
             };
           }
         }
+
+        console.log(action);
 
         return newState;
       },
@@ -203,4 +224,5 @@ export default function Table({
 Table.propTypes = {
   columns: PropTypes.array.isRequired,
   data: PropTypes.array.isRequired,
+  windowWidth: PropTypes.string.isRequired,
 };
