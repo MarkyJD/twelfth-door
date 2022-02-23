@@ -121,7 +121,13 @@ export const mediumColums = [
   {
     Header: 'Tags',
     accessor: 'tags',
-    Cell: ({ value }) => value.join(' '),
+    Cell: ({ value }) => (
+      <div className="flex flex-wrap">
+        {value.map((tag, i) => (
+          <Tag key={i} tag={tag} />
+        ))}
+      </div>
+    ),
   },
   {
     Header: 'Posted',
