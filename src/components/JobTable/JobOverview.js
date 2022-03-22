@@ -1,7 +1,10 @@
 /* eslint-disable no-extend-native */
+import { formatDistance } from 'date-fns';
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
+import JobTable from '.';
 import useUser from '../../hooks/useUser';
+import { getNewestJobs } from '../../services/firebase-services';
 import StatusPill from './StatusPill';
 
 Date.prototype.sameDay = function (d) {
@@ -25,6 +28,18 @@ export default function JobOverview({ jobOverviewData }) {
   });
   const [myResponsibleJobs, setMyResponsibleJobs] = useState([]);
   const [myRequestedJobs, setMyRequestedJobs] = useState([]);
+  const [latestJobs, setLatestJobs] = useState([]);
+
+  useEffect(() => {
+    async function getLatestJobs() {
+      const results = await getNewestJobs();
+      setLatestJobs(results);
+    }
+
+    if (user?.username) {
+      getLatestJobs();
+    }
+  }, [user?.username]);
 
   useEffect(() => {
     if (user?.username) {
@@ -89,7 +104,42 @@ export default function JobOverview({ jobOverviewData }) {
         Job Overview
       </p>
       {/* {console.log(myJobs)} */}
-      <p className="font-serif text-semibold text-lg">Number of Jobs</p>
+
+      <p className="font-serif text-semibold text-lg">Latest</p>
+      <div className="border-b border-slate-300 mb-3" />
+
+      <table className=" table-auto border w-full rounded mb-3 text-xs">
+        <thead>
+          <tr className="uppercase h-10 text-white bg-slate-500">
+            <th className="p-3 text-sm font-semibold text-center">Id</th>
+            <th className="p-3 text-sm font-semibold text-center">Priority</th>
+            <th className="p-3 text-sm font-semibold text-center">Title</th>
+            <th className="p-3 text-sm font-semibold text-center">Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          {latestJobs &&
+            latestJobs.map((job, i) => {
+              const { jobNo: id, priority, title, dateCreated } = job;
+              return (
+                <tr key={i} className="hover:bg-slate-200 cursor-pointer">
+                  <td className="font-semibold p-2 text-center">{id}</td>
+                  <td className="font-semibold p-2 flex justify-center ">
+                    <StatusPill priority={priority} className="w-14" />
+                  </td>
+                  <td className="font-semibold p-2 text-center">{title}</td>
+                  <td className="font-semibold p-2 text-center">
+                    {formatDistance(new Date(dateCreated), new Date(), {
+                      addSuffix: true,
+                    })}
+                  </td>
+                </tr>
+              );
+            })}
+        </tbody>
+      </table>
+
+      <p className="font-serif text-semibold text-lg">Information</p>
       <div className="border-b border-slate-300 mb-3" />
 
       {/* Priority / Count Table */}
@@ -143,8 +193,71 @@ export default function JobOverview({ jobOverviewData }) {
         </tfoot>
       </table>
 
-      <p className="font-serif text-semibold text-lg">My Assigned Jobs</p>
+      <p className="font-serif text-semibold text-lg">Assigned to Me</p>
       <div className="border-b border-slate-300 mb-3" />
+
+      <table className=" table-auto border w-full rounded mb-3 text-xs">
+        <thead>
+          <tr className="uppercase h-10 text-white bg-slate-500">
+            <th className="p-3 text-sm font-semibold text-center">Id</th>
+            <th className="p-3 text-sm font-semibold text-center">Priority</th>
+            <th className="p-3 text-sm font-semibold text-center">Title</th>
+            <th className="p-3 text-sm font-semibold text-center">Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          {[...myResponsibleJobs].map((job, i) => {
+            const { jobNo: id, priority, title, dateCreated } = job;
+            return (
+              <tr key={i} className="hover:bg-slate-200 cursor-pointer">
+                <td className="font-semibold p-2 text-center">{id}</td>
+                <td className="font-semibold p-2 flex justify-center ">
+                  <StatusPill priority={priority} className="w-14" />
+                </td>
+                <td className="font-semibold p-2 text-center">{title}</td>
+                <td className="font-semibold p-2 text-center">
+                  {formatDistance(new Date(dateCreated), new Date(), {
+                    addSuffix: true,
+                  })}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+
+      <p className="font-serif text-semibold text-lg">Reported by Me</p>
+      <div className="border-b border-slate-300 mb-3" />
+
+      <table className=" table-auto border w-full rounded mb-3 text-xs">
+        <thead>
+          <tr className="uppercase h-10 text-white bg-slate-500">
+            <th className="p-3 text-sm font-semibold text-center">Id</th>
+            <th className="p-3 text-sm font-semibold text-center">Priority</th>
+            <th className="p-3 text-sm font-semibold text-center">Title</th>
+            <th className="p-3 text-sm font-semibold text-center">Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          {[...myRequestedJobs].map((job, i) => {
+            const { jobNo: id, priority, title, dateCreated } = job;
+            return (
+              <tr key={i} className="hover:bg-slate-200 cursor-pointer">
+                <td className="font-semibold p-2 text-center">{id}</td>
+                <td className="font-semibold p-2 flex justify-center ">
+                  <StatusPill priority={priority} className="w-14" />
+                </td>
+                <td className="font-semibold p-2 text-center">{title}</td>
+                <td className="font-semibold p-2 text-center">
+                  {formatDistance(new Date(dateCreated), new Date(), {
+                    addSuffix: true,
+                  })}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
     </div>
   );
 }

@@ -164,7 +164,25 @@ export async function addJob(username, rawJob, prevJobNo) {
 
 export async function getCurrentJobs() {
   const jobsRef = collection(db, 'jobs');
-  const q = query(jobsRef, where('status', '!=', 'complete'));
+  const q = query(jobsRef, where('status', '!=', 'complete'), limit(20));
+
+  const querySnapshot = await getDocs(q);
+
+  const results = [];
+
+  querySnapshot.forEach((doc) => {
+    results.push({
+      ...doc.data(),
+      docId: doc.id,
+    });
+  });
+
+  return results;
+}
+
+export async function getNewestJobs(number = 5) {
+  const jobsRef = collection(db, 'jobs');
+  const q = query(jobsRef, orderBy('dateCreated', 'desc'), limit(number));
 
   const querySnapshot = await getDocs(q);
 
