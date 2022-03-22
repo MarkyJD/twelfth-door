@@ -12,10 +12,8 @@ export default function useFeed() {
   useEffect(() => {
     async function getFeed() {
       const results = await getAnnouncements();
-      // console.log(results);
       results.sort((a, b) => b.dateCreated - a.dateCreated);
       setFeed(results);
-      console.log(results);
     }
     // if (feed === null) {
     getFeed();

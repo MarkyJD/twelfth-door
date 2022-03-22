@@ -13,7 +13,6 @@ export default function Home() {
   useEffect(() => {
     async function getData() {
       const results = await getCurrentJobs();
-      console.log('i ran again');
       results.sort((a, b) => b.dateCreated - a.dateCreated);
       setJobOverviewData(results);
       setLoading(false);

@@ -43,13 +43,6 @@ export default function Header({ toggleOpen }) {
         <div className="block w-10 p-1 hover:bg-slate-600  md:hover:bg-transparent rounded">
           <BiMenu className="icon md:hidden" onClick={toggleOpen} />
         </div>
-
-        <input
-          type="text"
-          placeholder="Search"
-          aria-label="Enter your username or Email Address"
-          className="text-sm text-lightGray-700 w-3/4 bg-slate-700 py-5 px-4 h-2 border border-darkGray-400 outline-slate-600 rounded "
-        />
       </div>
       <div className="flex">
         <div className="w-10 p-1 mx-1 mr-2 hover:bg-slate-600 rounded">

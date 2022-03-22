@@ -40,7 +40,6 @@ export default function Feed() {
 
   return (
     <div className="w-full p-3 ">
-      {console.log(contentForMobile)}
       <p className="font-serif mb-3 text-semibold text-lg p-2 text-white bg-slate-700 rounded shadow">
         Announcements
       </p>
