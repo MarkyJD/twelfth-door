@@ -11,7 +11,6 @@ import {
   updateProfile,
   onAuthStateChanged,
 } from 'firebase/auth';
-import { seedAuth, seedDatabase } from '../mock_data/seed';
 
 // eslint-disable-next-line import/no-cycle
 
