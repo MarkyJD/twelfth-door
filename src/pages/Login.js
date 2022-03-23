@@ -34,6 +34,22 @@ export default function Login() {
     }
   };
 
+  const demoLogin = async (event) => {
+    event.preventDefault();
+
+    try {
+      const auth = getAuth();
+      await signInWithEmailAndPassword(
+        auth,
+        'dali@twelfthdoor.com',
+        'Password'
+      );
+      navigate(ROUTES.HOME);
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
   useEffect(() => {
     document.title = 'Twelfth Door | Login';
   }, []);
@@ -91,19 +107,29 @@ export default function Login() {
               <button
                 disabled={isInvalid}
                 type="submit"
-                className={`mb-5 mt-3 bg-darkBlue-100 hover:bg-darkBlue-200 shadow-md text-white font-bold w-3/4 mx-auto rounded h-10 ${
+                className={`mb-5 mt-5 bg-darkBlue-100 hover:bg-darkBlue-200 shadow-md text-white font-bold w-3/4 mx-auto rounded h-10 ${
                   isInvalid && ' opacity-50 hover:bg-darkBlue-100'
                 }`}
               >
                 Login
               </button>
             </form>
-            <p className="pb-10 md:p-0">
+
+            <p className="pb-10 mb-10 md:p-0">
               Forgot your password?
-              <span className="font-bold">
-                <Link to={ROUTES.FORGOT_PASSWORD}>{' Click here'}</Link>
-              </span>
+              <span className="font-bold cursor-pointer"> Click Here</span>
             </p>
+            <div className="mb-5 mt-3 border-b w-full border-gray-200" />
+
+            <p className="mb-5 md:p-0">Don't have an account?</p>
+
+            <button
+              type="button"
+              onClick={demoLogin}
+              className="mb-5 bg-purple-500 hover:bg-purple-600 shadow-md text-white font-bold w-3/4 mx-auto rounded h-10"
+            >
+              Demo
+            </button>
           </div>
         </div>
       </div>
